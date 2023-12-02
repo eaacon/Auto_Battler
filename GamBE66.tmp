@@ -1,0 +1,42 @@
+[gd_scene load_steps=6 format=3 uid="uid://chqqwwixc5ax0"]
+
+[ext_resource type="Script" path="res://GameManager.gd" id="1_m2jnk"]
+[ext_resource type="Script" path="res://Board.gd" id="1_x8o8c"]
+[ext_resource type="PackedScene" uid="uid://hwlepsxawjst" path="res://Tile.tscn" id="2_ggo27"]
+[ext_resource type="Script" path="res://PlayerInput.gd" id="4_3tyd2"]
+
+[sub_resource type="Environment" id="Environment_xiim7"]
+background_mode = 1
+background_color = Color(0.4, 0.564706, 0.631373, 1)
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_m2jnk")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 11, 11)
+fov = 25.0
+near = 0.1
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Camera3D"]
+environment = SubResource("Environment_xiim7")
+
+[node name="Board" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
+script = ExtResource("1_x8o8c")
+PlayerBoard = true
+GridW = 3
+GridH = 3
+Tile = ExtResource("2_ggo27")
+
+[node name="Board2" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0)
+script = ExtResource("1_x8o8c")
+GridW = 3
+GridH = 3
+Tile = ExtResource("2_ggo27")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.895927, 0.224963, -0.383022, 0.433013, -0.25, 0.866025, 0.0990684, -0.941749, -0.321394, 0, 0, 0)
+
+[node name="PlayerInput" type="Node" parent="."]
+script = ExtResource("4_3tyd2")
