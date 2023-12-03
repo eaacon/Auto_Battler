@@ -1,42 +1,65 @@
 class_name Board
 extends Node3D
 
-@onready var GM = $".."
+@onready var GM
 
-@export var PlayerBoard:= false
+var Owner: Node
 
 @export var GridW:= 4
 @export var GridH:= 4
 
-@export var Tile = load("res://Scenes/Prefabs/Tile.tscn")
+@export var BTile = load("res://Scenes/Prefabs/Tile.tscn")
 
 @export var offset = Vector2(0.5, 0.5)
 
-var Tile_List = []
+@onready var Grid: Array[Array]
 
-func _ready():
-	pass
-
-func _process(_delta):
-	pass
-
-func _build_grid():
+func _build_grid(o):
+	Owner = o
 	for i in GridW:
+		var New_Row = []
 		for j in GridH:
-			_make_tile(i, j)
+			#j is x, i is y
+			New_Row.append(_make_tile(j, i))
+		Grid.append(New_Row)
 
-	if PlayerBoard:
+	if _is_player():
 		translate(Vector3(-GridW, 0 ,0))
 
 func _make_tile(x, y):
-	var inst = Tile.instantiate()
-	Tile_List = get_children()
+	var inst = BTile.instantiate()
+	inst._setup(x+1, y+1, self)
+	inst.name = "T" + str(x+1) + "-" + str(y+1)
 	add_child(inst)
-	inst.translate(Vector3(x + offset.x, 0, y + offset.y))
 	
-	if PlayerBoard:
-		inst.Player = get_parent()
+	inst.translate(Vector3(x + offset.x, 0, -(y + offset.y)))
+	
+	return inst
 
 func _set_interactable(b):
 	for t in get_children():
 		t._set_pickable(b)
+
+func _get_units():
+	var Unit_List = []
+	for x in Grid.size():
+		for y in Grid[x].size():
+			var u = Grid[x][y].Unit_On_Tile
+			if u != null:
+				Unit_List.append(u)
+	return Unit_List
+
+func _units_alive():
+	var alive:= 0
+	for x in Grid.size():
+		for y in Grid[x].size():
+			var u = Grid[x][y].Unit_On_Tile
+			if u != null:
+				alive += 1
+	return alive
+
+func _is_player():
+	if GM == null:
+		print("No Game Manager")
+		return
+	return Owner == GM.Players[0]

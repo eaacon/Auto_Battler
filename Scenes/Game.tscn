@@ -1,8 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://chqqwwixc5ax0"]
+[gd_scene load_steps=7 format=3 uid="uid://chqqwwixc5ax0"]
 
 [ext_resource type="Script" path="res://Scripts/GameManager.gd" id="1_l88et"]
 [ext_resource type="Script" path="res://Scripts/Board.gd" id="2_bsf83"]
-[ext_resource type="PackedScene" uid="uid://hwlepsxawjst" path="res://Scenes/Prefabs/Tile.tscn" id="3_2swa8"]
 [ext_resource type="Script" path="res://Scripts/EnemyAI.gd" id="4_0xjwq"]
 [ext_resource type="PackedScene" uid="uid://dvjrvxlglu4y6" path="res://Scenes/UI/UI.tscn" id="5_7eefj"]
 [ext_resource type="Script" path="res://Scenes/Player.gd" id="6_luig1"]
@@ -14,10 +13,9 @@ background_color = Color(0.4, 0.564706, 0.631373, 1)
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_l88et")
 Setup_Time = 5
-Combat_Time = 10
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 11, 12)
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 11, 9)
 fov = 25.0
 near = 0.1
 
@@ -41,17 +39,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0)
 script = ExtResource("2_bsf83")
 GridW = 3
 GridH = 3
-Tile = ExtResource("3_2swa8")
 
 [node name="Player" type="Node" parent="."]
 script = ExtResource("6_luig1")
+Base_Money = 50
 
 [node name="Board" type="Node3D" parent="Player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 0)
 script = ExtResource("2_bsf83")
-PlayerBoard = true
 GridW = 3
 GridH = 3
-Tile = ExtResource("3_2swa8")
 
 [connection signal="timeout" from="GameTimer" to="." method="_on_game_timer_timeout"]

@@ -1,9 +1,9 @@
 extends Node
 
-@onready var GM = $".."
-@onready var Board = $Board
+@onready var GM
+@onready var board = $Board
 
-var Base_Money :int = 10
+@export var Base_Money :int = 10
 
 var Money: int:
 	set(amt):
@@ -11,8 +11,9 @@ var Money: int:
 		GM.Game_UI._set_money(Money)
 
 func _setup():
+	board.GM = GM
 	Money = Base_Money
-	Board._build_grid()
+	board._build_grid(self)
 
 func _pay(v: int):
 	Money += v

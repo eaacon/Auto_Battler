@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://e2cnlvt2tcfi"]
+[gd_scene load_steps=5 format=3 uid="uid://e2cnlvt2tcfi"]
 
 [ext_resource type="Script" path="res://Scenes/Prefabs/Unit.gd" id="1_c7akw"]
 [ext_resource type="Material" uid="uid://bp6r88oipobwy" path="res://Art/Materials/Default_Material.tres" id="1_x0x04"]
+[ext_resource type="Resource" uid="uid://bj4l5wam3mdrw" path="res://Scenes/Units/BaseStats.tres" id="2_astb0"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_cvh1r"]
 material = ExtResource("1_x0x04")
@@ -9,6 +10,9 @@ size = Vector3(0.6, 0.6, 0.6)
 
 [node name="Unit" type="Node3D"]
 script = ExtResource("1_c7akw")
+UStats = ExtResource("2_astb0")
+SDmg = 10
+SRange = 2
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)

@@ -1,7 +1,9 @@
 extends Node
 
-@onready var Board := $Board
+@onready var GM
+@onready var board := $Board
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	Board._build_grid()
+func _setup():
+	board.GM = GM
+	board._build_grid(self)
+
