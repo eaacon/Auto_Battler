@@ -39,6 +39,13 @@ func _set_interactable(b):
 	for t in get_children():
 		t._set_pickable(b)
 
+func _clear():
+	for x in Grid.size():
+		for y in Grid[x].size():
+			var t = Grid[x][y]
+			if t.Unit_On_Tile != null:
+				t._remove_unit()
+
 func _get_units():
 	var Unit_List = []
 	for x in Grid.size():

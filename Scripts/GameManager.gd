@@ -6,6 +6,8 @@ enum Stage {START, SETUP, PREP, COMBAT, FINISH}
 
 var Current_Stage: Stage
 
+@onready var Cam = $Camera3D
+
 @onready var Players: Array[Node]
 
 @onready var Game_UI := $UI
@@ -15,6 +17,8 @@ var Current_Stage: Stage
 @export var Setup_Time := 30
 #@export var Combat_Time = 60
 @export var Round_Delay := 1
+
+var Unit_UI = preload("res://Scenes/UI/Unit_Info_Control.tscn")
 
 #Game Info
 var Units_In_Play = []
@@ -31,6 +35,7 @@ func _ready():
 	for p in Players:
 		p.GM = self
 		p._setup()
+
 	_begin_game()
 
 func _process(_delta):

@@ -1,6 +1,10 @@
 class_name Unit
 extends Node3D
 
+#UI
+signal S_Health
+signal S_Meter
+
 #Info
 var Acting:= false
 @export var UStats: Stats
@@ -42,12 +46,12 @@ func _start_turn():
 			_attack(t)
 			UCurrentMeter += 1
 	else:
-		Acting = false
+		_move()
 
 func _calc_target():
 	var Aim_X = UTile.Coords.x
 	var B = UTile.Owner_Board
-	#is player?
+
 	if B._is_player():
 		#attack right
 		Aim_X += UStats.URange
@@ -62,16 +66,12 @@ func _calc_target():
 		print("Failed to get target board")
 		return;
 	
-	if Aim_X > B.GridW * 2:
-		Aim_X = B.GridW
-	elif Aim_X > B.GridW:
-		Aim_X -= B.GridW
-	elif Aim_X < -(B.GridW * 2):
-		Aim_X = 1
-	elif Aim_X < 1:
-		Aim_X += B.GridW
-	else:
+	var Valid_X = _get_valid_X(Aim_X, B)
+
+	if Aim_X == Valid_X:
 		TBoard = B
+	else:
+		Aim_X = Valid_X
 
 	var TUnit = TBoard.Grid[Aim_X-1][UTile.Coords.y-1].Unit_On_Tile
 	
@@ -79,8 +79,6 @@ func _calc_target():
 	var Aim_Coords = Vector2(Aim_X, UTile.Coords.y)
 	if TUnit != null:
 		print(UStats.UName + " at " + str(UTile.name) + " aims at " + TUnit.UStats.UName + " at " + str(Aim_Coords))
-	else:
-		print(UStats.UName + " at " + str(UTile.name) + " aims at empty" + str(Aim_Coords))
 
 	return TUnit
 
@@ -89,11 +87,48 @@ func _attack(target):
 	Acting = false
 	pass
 
+func _move():
+	var Move_Options = []
+	Move_Options.append(Vector2i(UTile.Coords.x - 1, _get_valid_Y(UTile.Coords.y + 1, UTile.Owner_Board) - 1))
+	Move_Options.append(Vector2i(UTile.Coords.x - 1, _get_valid_Y(UTile.Coords.y - 1, UTile.Owner_Board) - 1))
+	var randDir = Move_Options[randi() % Move_Options.size()]
+	UTile._move_unit(randDir)
+	print(UStats.UName + " at " + str(UTile.name) + " moves to " + str(randDir.x+1) + "-"+ str(randDir.y+1))
+	Acting = false
+
 func _end_turn():
+	S_Health.emit()
+	S_Meter.emit()
+	
 	UCurrentHP -= QDmg
+	
 	if UCurrentHP <= 0:
 		_die()
 	pass
+
+func _get_valid_X(x, _b):
+	if x > _b.GridW * 2:
+		return _b.GridW
+	elif x > _b.GridW:
+		return x - _b.GridW
+	elif x < -(_b.GridW * 2):
+		return 1
+	elif x < 1:
+		return x + _b.GridW
+	else:
+		return x
+
+func _get_valid_Y(y, _b):
+	if y > _b.GridH * 2:
+		return _b.GridH
+	elif y > _b.GridH:
+		return y - _b.GridH
+	elif y < -(_b.GridH * 2):
+		return 1
+	elif y < 1:
+		return y + _b.GridH
+	else:
+		return y
 
 func _die():
 	UTile._kill_unit()

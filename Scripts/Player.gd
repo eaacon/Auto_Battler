@@ -10,6 +10,7 @@ var Money: int:
 
 func _setup():
 	super._setup()
+	Team = Comp.new()
 	Money = Base_Money
 
 func _pay(v: int):

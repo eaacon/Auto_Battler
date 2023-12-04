@@ -1,0 +1,55 @@
+[gd_scene load_steps=9 format=3 uid="uid://e2cnlvt2tcfi"]
+
+[ext_resource type="Script" path="res://Scenes/Prefabs/Unit.gd" id="1_c7akw"]
+[ext_resource type="Material" uid="uid://bp6r88oipobwy" path="res://Art/Materials/Default_Material.tres" id="1_x0x04"]
+[ext_resource type="Resource" uid="uid://bj4l5wam3mdrw" path="res://Scenes/Units/BaseStats.tres" id="2_astb0"]
+[ext_resource type="PackedScene" uid="uid://d2h6jfqli20ji" path="res://Scenes/UI/Unit_Info_Control.tscn" id="4_7ws7p"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_cvh1r"]
+material = ExtResource("1_x0x04")
+size = Vector3(0.6, 0.6, 0.6)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_mxl4g"]
+viewport_path = NodePath("Unit_Info/SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h2cn6"]
+resource_local_to_scene = true
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_mxl4g")
+
+[sub_resource type="QuadMesh" id="QuadMesh_jjiqk"]
+material = SubResource("StandardMaterial3D_h2cn6")
+size = Vector2(1, 0.5)
+
+[node name="Unit" type="Node3D" node_paths=PackedStringArray("Unit_UI")]
+script = ExtResource("1_c7akw")
+Unit_UI = NodePath("Unit_Info/SubViewport/Control")
+UStats = ExtResource("2_astb0")
+SDmg = 10
+SRange = 2
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("BoxMesh_cvh1r")
+
+[node name="Unit_Info" type="Node3D" parent="."]
+
+[node name="SubViewport" type="SubViewport" parent="Unit_Info"]
+disable_3d = true
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(512, 256)
+
+[node name="Control" parent="Unit_Info/SubViewport" node_paths=PackedStringArray("U") instance=ExtResource("4_7ws7p")]
+offset_left = -256.0
+offset_top = -128.0
+offset_right = 256.0
+offset_bottom = 128.0
+U = NodePath("../../..")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Unit_Info"]
+transform = Transform3D(1, 0, 0, 0, 0.917442, 0.397869, 0, -0.397869, 0.917442, 0, 1.31691, 0)
+mesh = SubResource("QuadMesh_jjiqk")

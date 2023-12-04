@@ -1,0 +1,102 @@
+[gd_scene load_steps=5 format=3 uid="uid://d2h6jfqli20ji"]
+
+[ext_resource type="Theme" uid="uid://ck34fsguqop6o" path="res://Scenes/UI/UI_Theme.tres" id="1_dc0hh"]
+[ext_resource type="Script" path="res://Scripts/UnitInfoScript.gd" id="1_vkr3y"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uyksb"]
+bg_color = Color(0.360784, 0.635294, 0.439216, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.8, 0.8, 0.8, 0)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q5s0a"]
+bg_color = Color(0.388235, 0.6, 0.67451, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.8, 0.8, 0.8, 0)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="Unit_Data" type="Control" node_paths=PackedStringArray("HP_bar", "Meter_bar")]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -576.0
+offset_top = -324.0
+offset_right = -576.0
+offset_bottom = -324.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.3, 0.3)
+pivot_offset = Vector2(0, -150)
+mouse_filter = 2
+mouse_force_pass_scroll_events = false
+script = ExtResource("1_vkr3y")
+HP_bar = NodePath("MarginContainer/HBoxContainer/VBoxContainer/Healthbar")
+Meter_bar = NodePath("MarginContainer/HBoxContainer/VBoxContainer/Meter")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Panel" type="Panel" parent="MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 5
+alignment = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "UNIT"
+vertical_alignment = 1
+
+[node name="Healthbar" type="ProgressBar" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(300, 40)
+layout_mode = 2
+theme = ExtResource("1_dc0hh")
+theme_override_styles/fill = SubResource("StyleBoxFlat_uyksb")
+max_value = 1.0
+value = 1.0
+show_percentage = false
+
+[node name="Meter" type="ProgressBar" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(300, 25)
+layout_mode = 2
+theme = ExtResource("1_dc0hh")
+theme_override_styles/fill = SubResource("StyleBoxFlat_q5s0a")
+max_value = 1.0
+value = 1.0
+show_percentage = false

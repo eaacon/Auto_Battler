@@ -35,7 +35,7 @@ shadow_enabled = true
 
 [node name="EnemyAI" type="Node" parent="."]
 script = ExtResource("4_0xjwq")
-Team = ExtResource("4_5ilft")
+Team_Preset = ExtResource("4_5ilft")
 
 [node name="Board" type="Node3D" parent="EnemyAI"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0)
