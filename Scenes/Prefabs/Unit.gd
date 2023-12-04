@@ -50,7 +50,7 @@ func _calc_target():
 	#is player?
 	if B._is_player():
 		#attack right
-		Aim_X +=UStats.URange
+		Aim_X += UStats.URange
 	else:
 		#attack left
 		Aim_X -= UStats.URange
@@ -61,20 +61,21 @@ func _calc_target():
 	if(TBoard == null):
 		print("Failed to get target board")
 		return;
-
-	if Aim_X >= B.GridW * 2:
-		Aim_X = B.GridW-1
-	elif Aim_X >= B.GridW:
+	
+	if Aim_X > B.GridW * 2:
+		Aim_X = B.GridW
+	elif Aim_X > B.GridW:
 		Aim_X -= B.GridW
-	elif Aim_X <= -(B.GridW * 2):
-		Aim_X = 0
-	elif Aim_X <= 0:
+	elif Aim_X < -(B.GridW * 2):
+		Aim_X = 1
+	elif Aim_X < 1:
 		Aim_X += B.GridW
 	else:
 		TBoard = B
 
-	var TUnit = TBoard.Grid[Aim_X][UTile.Coords.y-1].Unit_On_Tile
+	var TUnit = TBoard.Grid[Aim_X-1][UTile.Coords.y-1].Unit_On_Tile
 	
+	#debug
 	var Aim_Coords = Vector2(Aim_X, UTile.Coords.y)
 	if TUnit != null:
 		print(UStats.UName + " at " + str(UTile.name) + " aims at " + TUnit.UStats.UName + " at " + str(Aim_Coords))
@@ -84,7 +85,7 @@ func _calc_target():
 	return TUnit
 
 func _attack(target):
-	target._queue_dmg(UStats.UDmg)
+	target._queue_dmg(UStats.UAttack)
 	Acting = false
 	pass
 

@@ -16,12 +16,11 @@ var Owner: Node
 
 func _build_grid(o):
 	Owner = o
-	for i in GridW:
-		var New_Row = []
-		for j in GridH:
-			#j is x, i is y
-			New_Row.append(_make_tile(j, i))
-		Grid.append(New_Row)
+	for i in GridH:
+		var New_Column = []
+		for j in GridW:
+			New_Column.append(_make_tile(i, j))
+		Grid.append(New_Column)
 
 	if _is_player():
 		translate(Vector3(-GridW, 0 ,0))
@@ -29,7 +28,7 @@ func _build_grid(o):
 func _make_tile(x, y):
 	var inst = BTile.instantiate()
 	inst._setup(x+1, y+1, self)
-	inst.name = "T" + str(x+1) + "-" + str(y+1)
+	inst.name = Owner.name.left(1) + str(x+1) + "-" + str(y+1)
 	add_child(inst)
 	
 	inst.translate(Vector3(x + offset.x, 0, -(y + offset.y)))

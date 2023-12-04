@@ -3,8 +3,10 @@ extends Node3D
 
 var Owner_Board: Board
 
-var Coords: Vector2
-var Unit_On_Tile
+var Coords: Vector2i
+var Unit_On_Tile:
+	set(new_unit):
+		Unit_On_Tile = new_unit
 
 @onready var Default_Mat = preload("res://Art/Materials/Default_Tile_Material.tres")
 @onready var Selected_Mat = preload("res://Art/Materials/Default_Tile_Selected_Material.tres")
@@ -27,22 +29,26 @@ func _on_static_body_3d_mouse_exited():
 func _on_static_body_3d_input_event(_camera, event, _position, _normal, _shape_idx):
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed == true:
-			_place_unit()
+			if Owner_Board._is_player():
+				_buy_unit()
 
-func _place_unit():
-	if Unit_On_Tile == null and Owner_Board._is_player():
-		var inst = load("res://Scenes/Prefabs/Unit.tscn").instantiate()
-		inst.UTile = self
-		if(Owner_Board.get_parent()._spend(inst.UStats.UCost)):
-			add_child(inst)
-			Unit_On_Tile = inst
-			print("Placed " + inst.name + " on " + self.name)
+func _buy_unit():
+	var inst = load("res://Scenes/Prefabs/Unit.tscn").instantiate()
+	if Owner_Board.get_parent()._spend(inst.UStats.UCost):
+		_place_unit(inst)
 
-func _move_unit(p: Vector2):
-	Owner_Board.Grid[p.x].insert(p.y, Unit_On_Tile)
+func _place_unit(u:Unit):
+	if Unit_On_Tile == null:
+		add_child(u)
+		u.UTile = self
+		Unit_On_Tile = u
+		print("Placed " + u.name + " on " + self.name)
+
+func _move_unit(p: Vector2i):
+	Owner_Board.Grid[p.x][p.y].Unit_On_Tile = Unit_On_Tile
 	Unit_On_Tile = null
-	Owner_Board.Grid[Coords.x-1].remove_at(Coords.y-1)
 
 func _kill_unit():
-	Owner_Board.Grid[Coords.x-1].remove_at(Coords.y-1)
+	Owner_Board.GM._out_of_play(Unit_On_Tile)
 	Unit_On_Tile.queue_free()
+	Unit_On_Tile = null

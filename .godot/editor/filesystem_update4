@@ -15,3 +15,7 @@ res://Scripts/Comp.gd
 res://Scripts/Tile.gd
 res://Scripts/Board.gd
 res://Scenes/Player.gd
+res://Comps/Turn_1_Standard.tres
+res://Scripts/CompUnit.gd
+res://Scripts/BoardManager.gd
+res://Scripts/Player.gd

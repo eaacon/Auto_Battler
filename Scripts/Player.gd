@@ -1,7 +1,5 @@
-extends Node
-
-@onready var GM
-@onready var board = $Board
+class_name Player
+extends BoardManager
 
 @export var Base_Money :int = 10
 
@@ -11,9 +9,8 @@ var Money: int:
 		GM.Game_UI._set_money(Money)
 
 func _setup():
-	board.GM = GM
+	super._setup()
 	Money = Base_Money
-	board._build_grid(self)
 
 func _pay(v: int):
 	Money += v

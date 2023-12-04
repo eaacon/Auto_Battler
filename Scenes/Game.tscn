@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://chqqwwixc5ax0"]
+[gd_scene load_steps=8 format=3 uid="uid://chqqwwixc5ax0"]
 
 [ext_resource type="Script" path="res://Scripts/GameManager.gd" id="1_l88et"]
 [ext_resource type="Script" path="res://Scripts/Board.gd" id="2_bsf83"]
 [ext_resource type="Script" path="res://Scripts/EnemyAI.gd" id="4_0xjwq"]
+[ext_resource type="Resource" uid="uid://djip0mf2d1xf5" path="res://Comps/Turn_1_Standard.tres" id="4_5ilft"]
 [ext_resource type="PackedScene" uid="uid://dvjrvxlglu4y6" path="res://Scenes/UI/UI.tscn" id="5_7eefj"]
-[ext_resource type="Script" path="res://Scenes/Player.gd" id="6_luig1"]
+[ext_resource type="Script" path="res://Scripts/Player.gd" id="6_luig1"]
 
 [sub_resource type="Environment" id="Environment_xiim7"]
 background_mode = 1
@@ -30,9 +31,11 @@ one_shot = true
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.895927, 0.224963, -0.383022, 0.433013, -0.25, 0.866025, 0.0990684, -0.941749, -0.321394, 0, 0, 0)
+shadow_enabled = true
 
 [node name="EnemyAI" type="Node" parent="."]
 script = ExtResource("4_0xjwq")
+Team = ExtResource("4_5ilft")
 
 [node name="Board" type="Node3D" parent="EnemyAI"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0)
