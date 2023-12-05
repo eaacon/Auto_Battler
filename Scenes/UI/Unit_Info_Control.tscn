@@ -27,7 +27,7 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[node name="Unit_Data" type="Control" node_paths=PackedStringArray("HP_bar", "Meter_bar")]
+[node name="Unit_Data" type="Control"]
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -45,8 +45,10 @@ pivot_offset = Vector2(0, -150)
 mouse_filter = 2
 mouse_force_pass_scroll_events = false
 script = ExtResource("1_vkr3y")
-HP_bar = NodePath("MarginContainer/HBoxContainer/VBoxContainer/Healthbar")
-Meter_bar = NodePath("MarginContainer/HBoxContainer/VBoxContainer/Meter")
+HP_bar = Object(ProgressBar,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(300, 40),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":0,"size_flags_stretch_ratio":1.0,"auto_translate":true,"localize_numeral_system":true,"tooltip_text":"","focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":ExtResource("1_dc0hh"),"theme_type_variation":&"","theme_override_font_sizes/font_size":71,"theme_override_styles/fill":SubResource("StyleBoxFlat_uyksb"),"min_value":0.0,"max_value":1.0,"step":0.01,"page":0.0,"value":1.0,"exp_edit":false,"rounded":false,"allow_greater":false,"allow_lesser":false,"fill_mode":0,"show_percentage":true,"script":null)
+
+Meter_bar = Object(ProgressBar,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(300, 25),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":0,"size_flags_stretch_ratio":1.0,"auto_translate":true,"localize_numeral_system":true,"tooltip_text":"","focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":ExtResource("1_dc0hh"),"theme_type_variation":&"","theme_override_styles/fill":SubResource("StyleBoxFlat_q5s0a"),"min_value":0.0,"max_value":1.0,"step":0.01,"page":0.0,"value":1.0,"exp_edit":false,"rounded":false,"allow_greater":false,"allow_lesser":false,"fill_mode":0,"show_percentage":false,"script":null)
+
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1

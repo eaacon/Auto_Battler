@@ -6,6 +6,7 @@ signal S_Health
 signal S_Meter
 
 #Info
+var UOwner: BoardManager
 var Acting:= false
 @export var UStats: Stats
 var UTile: Tile
@@ -31,6 +32,9 @@ var UCurrentMeter:
 #In-Game
 var QDmg: int
 
+var Queue_Move:= false
+var Queue_Move_Forward := false
+
 func _ready():
 	UMaxHP = UStats.UHP
 	UMaxMeter = UStats.UMeter
@@ -42,6 +46,12 @@ func _start_turn():
 	#if target is valid, 
 	Acting = true
 	
+	#_check_range()
+	if !_check_range():
+		Queue_Move_Forward = true
+		Acting = false
+		return
+	#check line of sight
 	var t = _calc_target()
 	if t != null:
 		if(UCurrentMeter == UMaxMeter):
@@ -52,9 +62,17 @@ func _start_turn():
 			_attack(t)
 			UCurrentMeter += 1
 	else:
-		_move()
+		Queue_Move = true
+		Acting = false
 
 func _end_turn():	
+	if Queue_Move:
+		_move()
+		Queue_Move = false
+	elif Queue_Move_Forward:
+		_move_f()
+		Queue_Move_Forward = false
+
 	UCurrentHP -= QDmg
 	QDmg = 0
 	
@@ -92,9 +110,37 @@ func _calc_target():
 	#var Aim_Coords = Vector2(Aim_X, UTile.Coords.y)
 	#if TUnit != null:
 		#print(UStats.UName + " at " + str(UTile.name) + " aims at " + TUnit.UStats.UName + " at " + str(Aim_Coords))
+	if TUnit.UOwner != UOwner:
+		return TUnit
 
-	return TUnit
+func _check_range():
+	var In_Range := false
+	var B = UTile.Owner_Board
+	for r in UStats.URange:
+		var TBoard
+		for y in B.GridH:
+			var Target_X = UTile.Coords.x + r + 1
+			var Valid_X = _get_valid_X(Target_X, B)
+			
+			if Target_X == Valid_X:
+				TBoard = B
+			else:
+				TBoard = B.GM._get_opposing_board(B)
+				Target_X= Valid_X
+			
+			var TUnit = TBoard.Grid[Target_X-1][UTile.Coords.y-1].Unit_On_Tile
+			
+			if TUnit == null:
+				continue
 
+			if TUnit.UOwner != UOwner:
+				In_Range = true
+				break
+	#retun in range
+	return false
+
+func _check_line_of_sight():
+	pass
 func _attack(target):
 	print(str(self.name) + " deals " + str(UStats.UAttack) + " to "\
 		+ str(target.name) + " at " + str(target.UTile.name))
@@ -110,8 +156,22 @@ func _move():
 	var randDir = Move_Options[randi() % Move_Options.size()]
 	UTile._move_unit(randDir)
 	print(UStats.UName + " at " + str(UTile.name) + " moves to " + str(randDir.x+1) + "-"+ str(randDir.y+1))
-	Acting = false
 
+func _move_f():
+	var B = UTile.Owner_Board
+	var Move_Tile = UTile.Coords
+	if B._is_player():
+		Move_Tile.x += 1
+	else:
+		Move_Tile.x -= 1
+
+	var V_X = _get_valid_X(Move_Tile.x, B)
+	if Move_Tile.x != V_X:
+		UTile._hop_unit(Vector2i(V_X, Move_Tile.y) - Vector2i(1, 1))
+	else:
+		UTile._move_unit(Move_Tile - Vector2i(1, 1))
+	print(UStats.UName + " at " + str(UTile.name) + " moves to " + str(Move_Tile.x+1) + "-"+ str(Move_Tile.y+1))
+	
 func _get_valid_X(x, _b):
 	if x > _b.GridW * 2:
 		return _b.GridW

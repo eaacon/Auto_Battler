@@ -3,7 +3,7 @@ extends Node3D
 
 @onready var GM
 
-var Owner: Node
+var Owner: BoardManager
 
 @export var GridW:= 4
 @export var GridH:= 4

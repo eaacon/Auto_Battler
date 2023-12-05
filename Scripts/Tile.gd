@@ -47,6 +47,7 @@ func _place_unit(u:Unit):
 	add_child(u)
 	
 	u.UTile = self
+	u.UOwner = Owner_Board.Owner
 	Unit_On_Tile = u
 	
 	#UI
@@ -64,6 +65,14 @@ func _move_unit(p: Vector2i):
 		return null
 	Unit_On_Tile = null
 
+func _hop_unit(p: Vector2i):
+	var opp_board = Owner_Board.GM._get_opposing_board(Owner_Board)
+	if opp_board.Grid[p.x][p.y].Unit_On_Tile == null:
+		remove_child(Unit_On_Tile)
+		opp_board.Grid[p.x][p.y]._place_unit(Unit_On_Tile)
+	else:
+		return null
+	Unit_On_Tile = null
 func _kill_unit():
 	Owner_Board.GM._out_of_play(Unit_On_Tile)
 	_remove_unit()

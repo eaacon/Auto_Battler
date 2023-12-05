@@ -1,13 +1,12 @@
-res://Scenes/Prefabs/Unit.tscn
+res://Scenes/Game.tscn
 res://Scripts/GameManager.gd
 res://Scenes/UI/UI_Theme.tres
 res://Scripts/Player.gd
+res://Scripts/Stats.gd
 res://Comps/Turn_1_Standard.tres
 res://Scenes/Prefabs/Unit.gd
 res://Scenes/Prefabs/Tile.tscn
-res://Scenes/Game.tscn
+res://Scenes/Prefabs/Unit.tscn
 res://Scenes/UI/UI.tscn
 res://Scenes/Prefabs/Ranged.tscn
 res://Scenes/UI/Unit_Info_Control.tscn
-res://Scenes/Units/BaseStats.tres
-res://Scripts/Tile.gd
