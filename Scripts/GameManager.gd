@@ -26,6 +26,7 @@ var Round_Num := 0
 var Turn_Active := false
 signal Next_Turn
 signal End_Combat
+var Kill_Queue = []
 
 func _ready():
 	print("-Start Game")
@@ -125,6 +126,9 @@ func _combat_round():
 	for u in Units_In_Play:
 		if u != null:
 			u._end_turn()
+	
+	for k in Kill_Queue:
+		Units_In_Play.erase(k)
 
 	await get_tree().create_timer(Round_Delay).timeout
 	
@@ -136,7 +140,7 @@ func _combat_round():
 		_combat_round()
 
 func _out_of_play(u):
-	Units_In_Play.erase(u)
+	Kill_Queue.append(u)
 
 func _check_combat_win():
 	for p in Players:

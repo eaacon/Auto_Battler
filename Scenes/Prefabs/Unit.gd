@@ -12,10 +12,16 @@ var UTile: Tile
 
 #Gameplay
 @onready var UMaxHP:int
-var UCurrentHP:int
+var UCurrentHP:
+	set(hp):
+		UCurrentHP = hp
+		S_Health.emit()
 
 @onready var UMaxMeter: int
-var UCurrentMeter: int
+var UCurrentMeter:
+	set(m):
+		UCurrentMeter = m
+		S_Meter.emit()
 
 #Skill
 @export var SDmg: int = 5
@@ -48,6 +54,13 @@ func _start_turn():
 	else:
 		_move()
 
+func _end_turn():	
+	UCurrentHP -= QDmg
+	QDmg = 0
+	
+	if UCurrentHP <= 0:
+		_die()
+
 func _calc_target():
 	var Aim_X = UTile.Coords.x
 	var B = UTile.Owner_Board
@@ -76,13 +89,16 @@ func _calc_target():
 	var TUnit = TBoard.Grid[Aim_X-1][UTile.Coords.y-1].Unit_On_Tile
 	
 	#debug
-	var Aim_Coords = Vector2(Aim_X, UTile.Coords.y)
-	if TUnit != null:
-		print(UStats.UName + " at " + str(UTile.name) + " aims at " + TUnit.UStats.UName + " at " + str(Aim_Coords))
+	#var Aim_Coords = Vector2(Aim_X, UTile.Coords.y)
+	#if TUnit != null:
+		#print(UStats.UName + " at " + str(UTile.name) + " aims at " + TUnit.UStats.UName + " at " + str(Aim_Coords))
 
 	return TUnit
 
 func _attack(target):
+	print(str(self.name) + " deals " + str(UStats.UAttack) + " to "\
+		+ str(target.name) + " at " + str(target.UTile.name))
+	
 	target._queue_dmg(UStats.UAttack)
 	Acting = false
 	pass
@@ -95,16 +111,6 @@ func _move():
 	UTile._move_unit(randDir)
 	print(UStats.UName + " at " + str(UTile.name) + " moves to " + str(randDir.x+1) + "-"+ str(randDir.y+1))
 	Acting = false
-
-func _end_turn():
-	S_Health.emit()
-	S_Meter.emit()
-	
-	UCurrentHP -= QDmg
-	
-	if UCurrentHP <= 0:
-		_die()
-	pass
 
 func _get_valid_X(x, _b):
 	if x > _b.GridW * 2:
@@ -131,6 +137,7 @@ func _get_valid_Y(y, _b):
 		return y
 
 func _die():
+	print(self.name + " died")
 	UTile._kill_unit()
 
 func _queue_dmg(v: int):
