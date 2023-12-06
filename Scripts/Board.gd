@@ -55,6 +55,14 @@ func _get_units():
 				Unit_List.append(u)
 	return Unit_List
 
+func _get_col_units(colX):
+	var units_in_col = []
+	for x in colX:
+		for y in Grid[x].size():
+			if Grid[x][y].Unit_On_Tile != null:
+				units_in_col.append(Grid[x][y].Unit_On_Tile)
+	return units_in_col
+
 func _units_alive():
 	var alive:= 0
 	for x in Grid.size():

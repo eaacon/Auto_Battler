@@ -108,36 +108,33 @@ func _calc_target():
 	
 	#debug
 	#var Aim_Coords = Vector2(Aim_X, UTile.Coords.y)
-	#if TUnit != null:
+	if TUnit != null:
 		#print(UStats.UName + " at " + str(UTile.name) + " aims at " + TUnit.UStats.UName + " at " + str(Aim_Coords))
-	if TUnit.UOwner != UOwner:
-		return TUnit
+		if TUnit.UOwner != UOwner:
+			return TUnit
 
 func _check_range():
 	var In_Range := false
 	var B = UTile.Owner_Board
 	for r in UStats.URange:
 		var TBoard
-		for y in B.GridH:
-			var Target_X = UTile.Coords.x + r + 1
-			var Valid_X = _get_valid_X(Target_X, B)
-			
-			if Target_X == Valid_X:
+		var Target_X = UTile.Coords.x + r + 1
+		var Valid_X = _get_valid_X(Target_X, B)
+		
+		if Target_X == Valid_X:
 				TBoard = B
-			else:
-				TBoard = B.GM._get_opposing_board(B)
-				Target_X= Valid_X
-			
-			var TUnit = TBoard.Grid[Target_X-1][UTile.Coords.y-1].Unit_On_Tile
-			
-			if TUnit == null:
-				continue
-
-			if TUnit.UOwner != UOwner:
+		else:
+			TBoard = B.GM._get_opposing_board(B)
+			Target_X= Valid_X
+		
+		var u_to_check = B._get_col_units(Target_X)
+		
+		for u in u_to_check:
+			if u.UOwner != UOwner:
 				In_Range = true
 				break
-	#retun in range
-	return false
+
+	return In_Range
 
 func _check_line_of_sight():
 	pass
