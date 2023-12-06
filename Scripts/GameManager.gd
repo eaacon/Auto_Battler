@@ -2,13 +2,15 @@ class_name GameManager
 extends Node3D
 
 #Game Settings
+signal win
+signal lose
 enum Stage {START, SETUP, PREP, COMBAT, FINISH}
 
 var Current_Stage: Stage
 
 @onready var Cam = $Camera3D
 
-@onready var Players: Array[Node]
+@onready var Players: Array[BoardManager]
 
 @onready var Game_UI := $UI
 
@@ -107,7 +109,7 @@ func _combat():
 func _combat_round():
 	Round_Num += 1
 	print("-Round "+str(Round_Num))
-	if(Round_Num > 20):
+	if(Round_Num > 30):
 		print("! too many rounds")
 		Round_Num = 0
 		_next_stage()
@@ -143,12 +145,35 @@ func _out_of_play(u):
 	Kill_Queue.append(u)
 
 func _check_combat_win():
-	for p in Players:
-		if p.board._units_alive() <= 0:
-			return true
+	var p1 = Players[0].Units_Alive.size()
+	var p2 = Players[1].Units_Alive.size()
+	
+	if p1 <= 0 && p2 <= 0:
+		Players[0]._take_damage(5)
+		Players[1]._take_damage(5)
+	elif p2 <= 0:
+		Players[0]._pay(1)
+		Players[1]._take_damage(5 + p1)
+	elif p1 <= 0:
+		Players[0]._take_damage(5 + p2)
+	else:
+		return false
+	return true
 
 func _finish():
 	Current_Stage = Stage.FINISH
+	
+	if Players[1].Current_Health <= 0:
+		print("You Win!")
+		for p in Players:
+			p.board._clear()
+		win.emit()
+		return
+	elif Players[0].Current_Health <= 0:
+		print("Enemy Wins...")
+		lose.emit()
+		return
+
 	print("-Finished Stage")
 	_next_stage()
 
@@ -161,3 +186,9 @@ func _get_opposing_board(b):
 		return Players[1].board
 	elif Players[1].board == b:
 		return Players[0].board
+
+func _is_player(p: BoardManager):
+	if p == Players[0]:
+		return true
+	else:
+		return false

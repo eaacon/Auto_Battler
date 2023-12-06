@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://osxgjd537561"]
+
+[ext_resource type="PackedScene" uid="uid://e2cnlvt2tcfi" path="res://Scenes/Prefabs/Unit.tscn" id="1_5ykc4"]
+[ext_resource type="Material" uid="uid://cmuy50nyemujp" path="res://Art/Materials/Default_MaterialR.tres" id="2_4jcuy"]
+
+[node name="Unit" instance=ExtResource("1_5ykc4")]
+
+[node name="GFX" parent="." index="0"]
+material_override = ExtResource("2_4jcuy")

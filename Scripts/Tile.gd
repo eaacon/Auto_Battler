@@ -19,17 +19,17 @@ func _set_pickable(b):
 	$MeshInstance3D/StaticBody3D.input_ray_pickable = b
 
 func _on_static_body_3d_mouse_entered():
-	if Owner_Board._is_player():
+	if Owner_Board.GM._is_player(Owner_Board.Owner):
 		$MeshInstance3D.material_override = Selected_Mat
 
 func _on_static_body_3d_mouse_exited():
-	if Owner_Board._is_player():
+	if Owner_Board.GM._is_player(Owner_Board.Owner):
 		$MeshInstance3D.material_override = Default_Mat
 
 func _on_static_body_3d_input_event(_camera, event, _position, _normal, _shape_idx):
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed == true:
-			if Owner_Board._is_player():
+			if Owner_Board.GM._is_player(Owner_Board.Owner):
 				_buy_unit()
 
 func _buy_unit():
@@ -41,16 +41,21 @@ func _buy_unit():
 	if Owner_Board.get_parent()._spend(inst.UStats.UCost):
 		print("Placing " + inst.name + " on " + self.name)
 		Owner_Board.get_parent().Team._add_unit(U_Scene, Coords)
-		_place_unit(inst)
+		_create_unit(inst, 1)
+
+func _create_unit(u:Unit, p:int):
+	Owner_Board.Owner.Units_Alive.append(u)
+	_place_unit(u)
+	_create_ui(u)
+	u._setup(p)
 
 func _place_unit(u:Unit):
 	add_child(u)
 	
 	u.UTile = self
-	u.UOwner = Owner_Board.Owner
 	Unit_On_Tile = u
-	
-	#UI
+
+func _create_ui(u: Unit):
 	var gm = Owner_Board.GM
 	var UUI = gm.Unit_UI.instantiate()
 	gm.Game_UI.add_child(UUI)
@@ -73,6 +78,7 @@ func _hop_unit(p: Vector2i):
 	else:
 		return null
 	Unit_On_Tile = null
+
 func _kill_unit():
 	Owner_Board.GM._out_of_play(Unit_On_Tile)
 	_remove_unit()

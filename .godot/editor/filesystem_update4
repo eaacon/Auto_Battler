@@ -10,3 +10,17 @@ res://Scenes/Prefabs/Ranged.tscn
 res://Scenes/UI/Unit_Info_Control.tscn
 res://Scenes/Prefabs/Unit.gd
 res://Scripts/Board.gd
+res://Scripts/Tile.gd
+res://Art/Materials/Default_MaterialR.tres
+res://Scenes/Prefabs/UnitR.tscn
+res://Scripts/BoardManager.gd
+res://Scenes/Prefabs/Projectile.gd
+res://Scenes/Prefabs/Attack.tscn
+res://Scenes/Boost.gd
+res://Scenes/Prefabs/Unit_R.tscn
+res://Scenes/Prefabs/Ability.tscn
+res://Scenes/Prefabs/Skill.gd
+res://Scripts/Projectile.gd
+res://Scripts/Skill.gd
+res://Scripts/Unit.gd
+res://Scripts/UI.gd

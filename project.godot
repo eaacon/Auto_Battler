@@ -14,3 +14,18 @@ config/name="AutoBattler"
 run/main_scene="res://Scenes/Game.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://Art/Images/icon.svg"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+
+[layer_names]
+
+3d_physics/layer_1="P1"
+3d_physics/layer_2="P2"
+3d_physics/layer_3="Projectiles"
+
+[rendering]
+
+anti_aliasing/quality/msaa_3d=2

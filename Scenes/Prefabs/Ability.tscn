@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://pkotfe26k0f"]
+
+[ext_resource type="Script" path="res://Scripts/Skill.gd" id="1_6tdtf"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_pgjk8"]
+radius = 0.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fnk44"]
+albedo_color = Color(0.839216, 0.403922, 0.27451, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_y51kx"]
+material = SubResource("StandardMaterial3D_fnk44")
+radius = 0.2
+height = 0.4
+radial_segments = 12
+rings = 12
+
+[node name="Skill" type="Area3D"]
+collision_layer = 4
+script = ExtResource("1_6tdtf")
+Speed = 3.5
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_pgjk8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_y51kx")

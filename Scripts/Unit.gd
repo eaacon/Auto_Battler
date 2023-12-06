@@ -7,9 +7,13 @@ signal S_Meter
 
 #Info
 var UOwner: BoardManager
-var Acting:= false
-@export var UStats: Stats
 var UTile: Tile
+var Acting:= false
+
+@export var UStats: Stats
+@export var UHitbox:Area3D
+@export var UAttack: PackedScene
+var Player_Unit:bool
 
 #Gameplay
 @onready var UMaxHP:int
@@ -25,15 +29,13 @@ var UCurrentMeter:
 		S_Meter.emit()
 
 #Skill
-@export var SDmg: int = 5
-@export var SCost:int = 3
-@export var SRange:int = 3
+@export var USkill: PackedScene
 
 #In-Game
 var QDmg: int
 
 var Queue_Move:= false
-var Queue_Move_Forward := false
+var Queue_Advance := false
 
 func _ready():
 	UMaxHP = UStats.UHP
@@ -41,37 +43,45 @@ func _ready():
 	UCurrentHP = UMaxHP
 	UCurrentMeter = 0
 
+func _setup(p:int):
+	UOwner = UTile.Owner_Board.GM.Players[p-1]
+	if p == 1:
+		UHitbox.set_collision_layer_value(2, false)
+		UHitbox.set_collision_layer_value(1, true)
+		Player_Unit = true
+	elif p == 2:
+		rotate_y(PI)
+		UHitbox.set_collision_layer_value(1, false)
+		UHitbox.set_collision_layer_value(2, true)
+		Player_Unit = false
+
 func _start_turn():
-	#check to see if anyone to hit, otherwise move down
-	#if target is valid, 
 	Acting = true
-	
-	#_check_range()
+
 	if !_check_range():
-		Queue_Move_Forward = true
+		Queue_Advance = true
 		Acting = false
 		return
-	#check line of sight
-	var t = _calc_target()
-	if t != null:
-		if(UCurrentMeter == UMaxMeter):
-			#implement ability
-			_attack(t)
-			UCurrentMeter += 1
-		else:
-			_attack(t)
-			UCurrentMeter += 1
 	else:
-		Queue_Move = true
-		Acting = false
+		if _can_attack():
+			if(UCurrentMeter == UMaxMeter):
+				#implement ability
+				_ability()
+				UCurrentMeter = 0
+			else:
+				_attack()
+				UCurrentMeter += 1
+		else:
+			Queue_Move = true
+			Acting = false
 
 func _end_turn():	
 	if Queue_Move:
 		_move()
 		Queue_Move = false
-	elif Queue_Move_Forward:
-		_move_f()
-		Queue_Move_Forward = false
+	elif Queue_Advance:
+		_advance()
+		Queue_Advance = false
 
 	UCurrentHP -= QDmg
 	QDmg = 0
@@ -79,56 +89,23 @@ func _end_turn():
 	if UCurrentHP <= 0:
 		_die()
 
-func _calc_target():
-	var Aim_X = UTile.Coords.x
-	var B = UTile.Owner_Board
-
-	if B._is_player():
-		#attack right
-		Aim_X += UStats.URange
-	else:
-		#attack left
-		Aim_X -= UStats.URange
-	
-	#T is target
-	var TBoard = B.GM._get_opposing_board(B)
-	
-	if(TBoard == null):
-		print("Failed to get target board")
-		return;
-	
-	var Valid_X = _get_valid_X(Aim_X, B)
-
-	if Aim_X == Valid_X:
-		TBoard = B
-	else:
-		Aim_X = Valid_X
-
-	var TUnit = TBoard.Grid[Aim_X-1][UTile.Coords.y-1].Unit_On_Tile
-	
-	#debug
-	#var Aim_Coords = Vector2(Aim_X, UTile.Coords.y)
-	if TUnit != null:
-		#print(UStats.UName + " at " + str(UTile.name) + " aims at " + TUnit.UStats.UName + " at " + str(Aim_Coords))
-		if TUnit.UOwner != UOwner:
-			return TUnit
-
 func _check_range():
 	var In_Range := false
 	var B = UTile.Owner_Board
 	for r in UStats.URange:
 		var TBoard
-		var Target_X = UTile.Coords.x + r + 1
+		var Target_X = _get_target_x(r)
+
 		var Valid_X = _get_valid_X(Target_X, B)
 		
 		if Target_X == Valid_X:
-				TBoard = B
+			TBoard = B
 		else:
 			TBoard = B.GM._get_opposing_board(B)
 			Target_X= Valid_X
 		
-		var u_to_check = B._get_col_units(Target_X)
-		
+		var u_to_check = TBoard._get_col_units(Target_X-1)
+
 		for u in u_to_check:
 			if u.UOwner != UOwner:
 				In_Range = true
@@ -136,15 +113,43 @@ func _check_range():
 
 	return In_Range
 
-func _check_line_of_sight():
-	pass
-func _attack(target):
-	print(str(self.name) + " deals " + str(UStats.UAttack) + " to "\
-		+ str(target.name) + " at " + str(target.UTile.name))
-	
-	target._queue_dmg(UStats.UAttack)
-	Acting = false
-	pass
+func _can_attack():
+	#plus for melee
+	#raycast line/specific position for ranged
+	#add loop if multiple
+	var B = UTile.Owner_Board
+	for r in UStats.URange:
+		var TBoard
+		var Target_X = _get_target_x(r)
+		
+		var Valid_X = _get_valid_X(Target_X, B)
+		
+		if Target_X == Valid_X:
+			TBoard = B
+		else:
+			TBoard = B.GM._get_opposing_board(B)
+			Target_X = Valid_X
+
+		if TBoard._get_unit(Target_X-1, UTile.Coords.y -1) != null:
+			return true
+	return false
+
+func _get_target_x(r):
+	var Target_X = UTile.Coords.x
+	if Player_Unit:
+		return Target_X + (r + 1)
+	else:
+		return Target_X - (r + 1)
+
+func _attack():
+	var attack_inst = UAttack.instantiate()
+	$FirePoint.add_child(attack_inst)
+	attack_inst._setup(UStats.UAttack + randi_range(-1, 1), UStats.URange, Vector3(1,0,0), Player_Unit)
+
+func _ability():
+	var ability_inst = USkill.instantiate()
+	$FirePoint.add_child(ability_inst)
+	ability_inst._setup(Vector3(1,0,0), Player_Unit)
 
 func _move():
 	var Move_Options = []
@@ -154,21 +159,22 @@ func _move():
 	UTile._move_unit(randDir)
 	print(UStats.UName + " at " + str(UTile.name) + " moves to " + str(randDir.x+1) + "-"+ str(randDir.y+1))
 
-func _move_f():
+func _advance():
 	var B = UTile.Owner_Board
 	var Move_Tile = UTile.Coords
-	if B._is_player():
+	if B.GM._is_player(B.Owner):
 		Move_Tile.x += 1
 	else:
 		Move_Tile.x -= 1
 
 	var V_X = _get_valid_X(Move_Tile.x, B)
-	if Move_Tile.x != V_X:
+	if Move_Tile.x == V_X:
+		UTile._move_unit(Move_Tile - Vector2i(1, 1))
+	elif UStats.URange == 1:
 		UTile._hop_unit(Vector2i(V_X, Move_Tile.y) - Vector2i(1, 1))
 	else:
-		UTile._move_unit(Move_Tile - Vector2i(1, 1))
-	print(UStats.UName + " at " + str(UTile.name) + " moves to " + str(Move_Tile.x+1) + "-"+ str(Move_Tile.y+1))
-	
+		_move()
+
 func _get_valid_X(x, _b):
 	if x > _b.GridW * 2:
 		return _b.GridW
@@ -195,7 +201,13 @@ func _get_valid_Y(y, _b):
 
 func _die():
 	print(self.name + " died")
+	UOwner._kill(self)
 	UTile._kill_unit()
 
 func _queue_dmg(v: int):
 	QDmg += v
+
+func _damage(v: int):
+	UCurrentHP -= v
+	if UCurrentHP <= 0:
+		visible = false

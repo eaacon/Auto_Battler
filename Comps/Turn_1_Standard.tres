@@ -1,17 +1,17 @@
 [gd_resource type="Resource" script_class="Comp" load_steps=6 format=3 uid="uid://djip0mf2d1xf5"]
 
 [ext_resource type="Script" path="res://Scripts/CompUnit.gd" id="1_c3mcl"]
-[ext_resource type="PackedScene" uid="uid://e2cnlvt2tcfi" path="res://Scenes/Prefabs/Unit.tscn" id="1_g87dg"]
 [ext_resource type="Script" path="res://Scripts/Comp.gd" id="1_kfsi8"]
+[ext_resource type="PackedScene" uid="uid://osxgjd537561" path="res://Scenes/Prefabs/Unit_R.tscn" id="2_wdqhb"]
 
 [sub_resource type="Resource" id="Resource_d2gbk"]
 script = ExtResource("1_c3mcl")
-unit = ExtResource("1_g87dg")
+unit = ExtResource("2_wdqhb")
 location = Vector2i(1, 1)
 
 [sub_resource type="Resource" id="Resource_jo44x"]
 script = ExtResource("1_c3mcl")
-unit = ExtResource("1_g87dg")
+unit = ExtResource("2_wdqhb")
 location = Vector2i(2, 3)
 
 [resource]

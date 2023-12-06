@@ -22,7 +22,7 @@ func _build_grid(o):
 			New_Column.append(_make_tile(i, j))
 		Grid.append(New_Column)
 
-	if _is_player():
+	if GM._is_player(Owner):
 		translate(Vector3(-GridW, 0 ,0))
 
 func _make_tile(x, y):
@@ -55,12 +55,14 @@ func _get_units():
 				Unit_List.append(u)
 	return Unit_List
 
+func _get_unit(x, y):
+	return Grid[x][y].Unit_On_Tile
+
 func _get_col_units(colX):
 	var units_in_col = []
-	for x in colX:
-		for y in Grid[x].size():
-			if Grid[x][y].Unit_On_Tile != null:
-				units_in_col.append(Grid[x][y].Unit_On_Tile)
+	for y in Grid[colX].size():
+		if Grid[colX][y].Unit_On_Tile != null:
+			units_in_col.append(Grid[colX][y].Unit_On_Tile)
 	return units_in_col
 
 func _units_alive():
@@ -71,9 +73,3 @@ func _units_alive():
 			if u != null:
 				alive += 1
 	return alive
-
-func _is_player():
-	if GM == null:
-		print("No Game Manager")
-		return
-	return Owner == GM.Players[0]
