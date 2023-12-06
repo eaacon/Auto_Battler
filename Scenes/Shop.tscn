@@ -1,0 +1,121 @@
+[gd_scene load_steps=12 format=3 uid="uid://cu8rhlaplb3c7"]
+
+[ext_resource type="Script" path="res://Scenes/Shop.gd" id="1_j70tr"]
+[ext_resource type="Material" uid="uid://bp6r88oipobwy" path="res://Art/Materials/Default_Material.tres" id="2_cac2o"]
+[ext_resource type="PackedScene" uid="uid://e2cnlvt2tcfi" path="res://Scenes/Prefabs/Unit.tscn" id="2_vrfu0"]
+[ext_resource type="Material" uid="uid://cmuy50nyemujp" path="res://Art/Materials/Default_MaterialR.tres" id="3_ekgms"]
+[ext_resource type="Material" uid="uid://ctboy1wo2o2ly" path="res://Art/Materials/Default_Tile_Material.tres" id="4_2xepo"]
+[ext_resource type="Material" uid="uid://drvtqhstynlas" path="res://Art/Materials/Default_Tile_Selected_Material.tres" id="5_3lsui"]
+[ext_resource type="PackedScene" uid="uid://b566e1tca25v0" path="res://Scenes/Prefabs/ShopTile.tscn" id="6_hsybg"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_6wwbm"]
+radius = 0.2
+height = 1.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_obaw6"]
+size = Vector3(0.535, 0.265, 0.075)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wwltw"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_sloeq"]
+height = 0.4
+radius = 0.36
+
+[node name="Shop" type="Node3D" node_paths=PackedStringArray("Slots")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0)
+script = ExtResource("1_j70tr")
+Slots = [NodePath("ShopTile"), NodePath("ShopTile2"), NodePath("ShopTile3")]
+For_Sale = Array[PackedScene]([ExtResource("2_vrfu0")])
+
+[node name="Visuals" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.12334, 0.523398, -1.45992)
+material_override = ExtResource("2_cac2o")
+mesh = SubResource("CapsuleMesh_6wwbm")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.75523, 0.258966, -0.161212)
+material_override = ExtResource("3_ekgms")
+mesh = SubResource("BoxMesh_obaw6")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 1.7357, 0.578382, -2.47002)
+material_override = ExtResource("3_ekgms")
+mesh = SubResource("BoxMesh_obaw6")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(0.38725, 0, -0.151606, 0, 0.415868, 0, 0.151606, 0, 0.38725, 3.18162, 0.221975, -2.32552)
+material_override = ExtResource("2_cac2o")
+mesh = SubResource("BoxMesh_wwltw")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(0.289262, 0, -0.298787, 0, 0.415868, 0, 0.298787, 0, 0.289262, 2.98005, 0.626738, -2.61237)
+material_override = ExtResource("2_cac2o")
+mesh = SubResource("BoxMesh_wwltw")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(0.314211, -0.243077, -0.123011, 0.226349, 0.337431, -0.0886141, 0.151606, 0, 0.38725, 2.65037, 0.332079, -2.32552)
+material_override = ExtResource("2_cac2o")
+mesh = SubResource("BoxMesh_wwltw")
+skeleton = NodePath("../..")
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0)
+
+[node name="MeshInstance3D" type="CSGBox3D" parent="Visuals/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.99132, 0.21405, -1.50972)
+size = Vector3(1.846, 0.426147, 2.92111)
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D2" type="CSGBox3D" parent="Visuals/CSGCombiner3D/MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.305975, 0, 0)
+operation = 2
+size = Vector3(1.83181, 0.937256, 2.30371)
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D3" type="CSGBox3D" parent="Visuals/CSGCombiner3D/MeshInstance3D/MeshInstance3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0389903, 0, 2.03963)
+material_override = ExtResource("3_ekgms")
+size = Vector3(0.548285, 0.937256, 2.30371)
+metadata/_edit_group_ = true
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Visuals/CSGCombiner3D/MeshInstance3D/MeshInstance3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.939205, 0, 1.18205)
+operation = 2
+height = 0.696397
+sides = 16
+
+[node name="MeshInstance3D3" type="CSGBox3D" parent="Visuals/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.99132, -0.03343, -1.50972)
+material_override = ExtResource("4_2xepo")
+size = Vector3(2.23633, 0.112488, 3.12793)
+material = ExtResource("4_2xepo")
+metadata/_edit_group_ = true
+
+[node name="Reroll" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.69171, 0.381115, -0.401069)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Reroll"]
+shape = SubResource("CylinderShape3D_sloeq")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Reroll"]
+material_override = ExtResource("5_3lsui")
+radius = 0.3
+height = 0.35
+sides = 16
+
+[node name="ShopTile" parent="." instance=ExtResource("6_hsybg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, -0.5)
+
+[node name="ShopTile2" parent="." instance=ExtResource("6_hsybg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, -1.5)
+
+[node name="ShopTile3" parent="." instance=ExtResource("6_hsybg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, -2.5)

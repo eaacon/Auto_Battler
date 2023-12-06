@@ -43,8 +43,8 @@ func _ready():
 	UCurrentHP = UMaxHP
 	UCurrentMeter = 0
 
-func _setup(p:int):
-	UOwner = UTile.Owner_Board.GM.Players[p-1]
+func _setup(p:int, o:BoardManager):
+	UOwner = o
 	if p == 1:
 		UHitbox.set_collision_layer_value(2, false)
 		UHitbox.set_collision_layer_value(1, true)
@@ -129,9 +129,11 @@ func _can_attack():
 		else:
 			TBoard = B.GM._get_opposing_board(B)
 			Target_X = Valid_X
-
-		if TBoard._get_unit(Target_X-1, UTile.Coords.y -1) != null:
-			return true
+		
+		var Tar = TBoard._get_unit(Target_X-1, UTile.Coords.y -1)
+		if Tar != null:
+			if Tar.UOwner != UOwner:
+				return true
 	return false
 
 func _get_target_x(r):

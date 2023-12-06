@@ -46,20 +46,14 @@ func _buy_unit():
 func _create_unit(u:Unit, p:int):
 	Owner_Board.Owner.Units_Alive.append(u)
 	_place_unit(u)
-	_create_ui(u)
-	u._setup(p)
+	Owner_Board.Owner._create_unit_ui(u)
+	u._setup(p, Owner_Board.Owner.GM.Players[p-1])
 
 func _place_unit(u:Unit):
 	add_child(u)
 	
 	u.UTile = self
 	Unit_On_Tile = u
-
-func _create_ui(u: Unit):
-	var gm = Owner_Board.GM
-	var UUI = gm.Unit_UI.instantiate()
-	gm.Game_UI.add_child(UUI)
-	UUI._setup(u, gm.Cam)
 
 func _move_unit(p: Vector2i):
 	#set unit on tile variable

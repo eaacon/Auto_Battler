@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://b566e1tca25v0"]
+
+[ext_resource type="Script" path="res://Scripts/ShopTile.gd" id="1_et3mr"]
+[ext_resource type="Material" uid="uid://ctboy1wo2o2ly" path="res://Art/Materials/Default_Tile_Material.tres" id="2_frnfu"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_mrcj1"]
+size = Vector3(0.9, 0.3, 0.9)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jrvuc"]
+size = Vector3(1, 0.5, 1)
+
+[node name="ShopTile" type="Node3D"]
+script = ExtResource("1_et3mr")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, 0)
+material_override = ExtResource("2_frnfu")
+mesh = SubResource("BoxMesh_mrcj1")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+input_ray_pickable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+shape = SubResource("BoxShape3D_jrvuc")
+
+[connection signal="input_event" from="MeshInstance3D/StaticBody3D" to="." method="_on_static_body_3d_input_event"]
+[connection signal="mouse_entered" from="MeshInstance3D/StaticBody3D" to="." method="_on_static_body_3d_mouse_entered"]
+[connection signal="mouse_exited" from="MeshInstance3D/StaticBody3D" to="." method="_on_static_body_3d_mouse_exited"]

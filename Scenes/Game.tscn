@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://chqqwwixc5ax0"]
+[gd_scene load_steps=18 format=3 uid="uid://chqqwwixc5ax0"]
 
 [ext_resource type="Script" path="res://Scripts/GameManager.gd" id="1_l88et"]
 [ext_resource type="Script" path="res://Scripts/Board.gd" id="2_bsf83"]
@@ -6,11 +6,64 @@
 [ext_resource type="Resource" uid="uid://djip0mf2d1xf5" path="res://Comps/Turn_1_Standard.tres" id="4_5ilft"]
 [ext_resource type="PackedScene" uid="uid://dvjrvxlglu4y6" path="res://Scenes/UI/UI.tscn" id="5_7eefj"]
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="6_luig1"]
+[ext_resource type="PackedScene" uid="uid://cu8rhlaplb3c7" path="res://Scenes/Shop.tscn" id="7_4l2aw"]
 [ext_resource type="Script" path="res://Scripts/Boost.gd" id="7_kkrxa"]
 
 [sub_resource type="Environment" id="Environment_xiim7"]
 background_mode = 1
 background_color = Color(0.4, 0.564706, 0.631373, 1)
+
+[sub_resource type="Animation" id="Animation_tfpso"]
+resource_name = "Enter_Right"
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 8, 0, 0, 1, 1, 0, 0, 0)
+
+[sub_resource type="Animation" id="Animation_6hbru"]
+resource_name = "Exit_Right"
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0.5, 0, 0, 1, 1, 8, 0, 0)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_7gu6k"]
+_data = {
+"Enter_Right": SubResource("Animation_tfpso"),
+"Exit_Right": SubResource("Animation_6hbru")
+}
+
+[sub_resource type="Animation" id="Animation_ayyx2"]
+resource_name = "Enter_Top"
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0.5, 0, -9, 0.0001, 1, 0.5, 0, -9, 0.0002, 1, 0.5, 0, -9, 1, 1, 0.5, 0, 0)
+
+[sub_resource type="Animation" id="Animation_o8l14"]
+resource_name = "Exit_Bottom"
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0.5, 0, 0, 1, 1, 0.5, 0, 7)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vpj08"]
+_data = {
+"Enter_Top": SubResource("Animation_ayyx2"),
+"Exit_Bottom": SubResource("Animation_o8l14")
+}
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pvm5e"]
 size = Vector3(0.9, 5, 10)
@@ -18,9 +71,9 @@ size = Vector3(0.9, 5, 10)
 [sub_resource type="BoxMesh" id="BoxMesh_hcmkf"]
 size = Vector3(3, 0.3, 3)
 
-[node name="Node3D" type="Node3D"]
+[node name="Root" type="Node3D"]
 script = ExtResource("1_l88et")
-Setup_Time = 5
+Setup_Time = 8
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 11, 9)
@@ -43,16 +96,21 @@ shadow_enabled = true
 [node name="EnemyAI" type="Node" parent="." node_paths=PackedStringArray("Health_Label")]
 script = ExtResource("4_0xjwq")
 Team_Preset = ExtResource("4_5ilft")
-Health_Label = NodePath("HealthLabel")
+Health_Label = NodePath("Board/HealthLabel")
 Health = 20
 
 [node name="Board" type="Node3D" parent="EnemyAI"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 0)
 script = ExtResource("2_bsf83")
 GridW = 3
 GridH = 3
 
-[node name="HealthLabel" type="Label3D" parent="EnemyAI"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="EnemyAI/Board"]
+libraries = {
+"": SubResource("AnimationLibrary_7gu6k")
+}
+
+[node name="HealthLabel" type="Label3D" parent="EnemyAI/Board"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 4.5, 0, -1.5)
 pixel_size = 0.01
 text = "30HP"
@@ -62,7 +120,7 @@ uppercase = true
 
 [node name="Player" type="Node" parent="." node_paths=PackedStringArray("Health_Label")]
 script = ExtResource("6_luig1")
-Health_Label = NodePath("HealthLabel")
+Health_Label = NodePath("Board/HealthLabel")
 
 [node name="Board" type="Node3D" parent="Player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
@@ -70,20 +128,29 @@ script = ExtResource("2_bsf83")
 GridW = 3
 GridH = 3
 
-[node name="HealthLabel" type="Label3D" parent="Player"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -4.5, 0, -1.5)
+[node name="HealthLabel" type="Label3D" parent="Player/Board"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -1, 0, -1.5)
 pixel_size = 0.01
 text = "30HP"
 font_size = 60
 outline_size = 0
 uppercase = true
 
-[node name="Area3D" type="Area3D" parent="."]
+[node name="Shop" parent="." node_paths=PackedStringArray("GM") instance=ExtResource("7_4l2aw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, -9)
+GM = NodePath("..")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Shop"]
+libraries = {
+"": SubResource("AnimationLibrary_vpj08")
+}
+
+[node name="Boost" type="Area3D" parent="."]
 collision_layer = 8
 collision_mask = 4
 script = ExtResource("7_kkrxa")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Boost"]
 shape = SubResource("BoxShape3D_pvm5e")
 
 [node name="Placeholder" type="Node3D" parent="."]

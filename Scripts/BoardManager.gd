@@ -42,5 +42,10 @@ func _set_board():
 func _take_damage(d:int):
 	Current_Health -= d
 
+func _create_unit_ui(u:Unit):
+	var UUI = GM.Unit_UI.instantiate()
+	GM.Game_UI.add_child(UUI)
+	UUI._setup(u, GM.Cam)
+
 func _kill(u:Unit):
 	Units_Alive.erase(u)

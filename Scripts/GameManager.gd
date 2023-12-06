@@ -5,6 +5,9 @@ extends Node3D
 signal win
 signal lose
 enum Stage {START, SETUP, PREP, COMBAT, FINISH}
+signal start
+signal setup
+signal prep
 
 var Current_Stage: Stage
 
@@ -50,10 +53,11 @@ func _process(_delta):
 			if(u.Acting):
 				return
 	
-	emit_signal("Next_Turn")
+	Next_Turn.emit()
 	Turn_Active = false
 
 func _begin_game():
+	start.emit()
 	GTimer.start()
 
 func _on_game_timer_timeout():
@@ -75,6 +79,7 @@ func _next_stage():
 	Game_UI._set_stage_label(Stage.keys()[Current_Stage])
 
 func _setup():
+	setup.emit()
 	Current_Stage = Stage.SETUP
 	
 	Units_In_Play.clear()
@@ -85,11 +90,15 @@ func _setup():
 	Players[0]._pay(5)
 	Players[0].board._set_interactable(true)
 	
+	await $Shop/AnimationPlayer.animation_finished
 	GTimer.wait_time = Setup_Time
 	GTimer.start()
 	print("-Setup Stage")
 
 func _prep():
+	$Shop._hide()
+	await $Shop/AnimationPlayer.animation_finished
+	prep.emit()
 	Current_Stage = Stage.PREP
 	Players[0].board._set_interactable(false)
 	
@@ -99,6 +108,7 @@ func _prep():
 		Units_In_Play.append_array(b.board._get_units())
 
 	print("-Prep Stage")
+	await $EnemyAI/Board/AnimationPlayer.animation_finished
 	_next_stage()
 
 func _combat():
