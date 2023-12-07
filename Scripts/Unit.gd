@@ -216,36 +216,62 @@ func _queue_dmg(v: int):
 func _damage(v: int):
 	UCurrentHP -= v
 	if UCurrentHP <= 0:
-		visible = false
+		remove_child($Area3D)
+		remove_child($GFX)
 
+#Drag and Drop
 func _process(_delta):
 	if Picked_Up:
-		position = _screen_to_world()["position"]
+		if !GameManager.Can_Interact:
+			reparent(UTile)
+			_drop()
+
+		if _screen_to_world().has("position"):
+			position = _screen_to_world()["position"]
+		else:
+			reparent(UTile)
+			_drop()
+		
+		if Input.is_action_just_released("click"):
+			if !Tile_Detect.is_colliding():
+				reparent(UTile)
+			else:
+				var Under = Tile_Detect.get_collider().get_parent().get_parent()
+				if Under.get_script() == Tile:
+					_mouse_release_on_tile(Under)
+				else:
+					reparent(UTile)
+			_drop()
+	elif position != Vector3.ZERO:
+		position = Vector3.ZERO
 
 func _on_area_3d_input_event(_camera, event, _position, _normal, _shape_idx):
-	if event is InputEventMouseButton:
-		if event.pressed == true && !Picked_Up:
+	if event is InputEventMouseButton && GameManager.Can_Interact:
+		if event.pressed == true && !GameManager.Held:
 			reparent(get_tree().root)
 			Picked_Up = true
-		elif Picked_Up:
-			var Under = Tile_Detect.get_collider().get_parent().get_parent()
-			if Under.get_script() == Tile:
-				if Under.Unit_On_Tile != null:
-					reparent(UTile)
-				elif UTile.get_script() == ShopTile:
-					#buy
-					get_parent().remove_child(self)
-					if !UTile._buy_unit(self, Under.Coords):
-						UTile.add_child(self)
-				elif UTile.get_script() == Tile:
-					#move
-					get_parent().remove_child(self)
-					UOwner.Team._move_unit(UTile.Coords, Under.Coords)
-					UTile._move_unit(Under.Coords - Vector2i(1, 1))
-			else:
-				reparent(UTile)
-			position = Vector3.ZERO
-			Picked_Up = false
+			GameManager.Held = true
+
+func _mouse_release_on_tile(Under):
+	if Under.Unit_On_Tile == null:
+		if UTile.get_script() == ShopTile:
+			#buy
+			get_parent().remove_child(self)
+			if !UTile._buy_unit(self, Under.Coords):
+				UTile.add_child(self)
+		elif UTile.get_script() == Tile:
+			#move
+			get_parent().remove_child(self)
+			UOwner.Team._move_unit(UTile.Coords, Under.Coords)
+			UTile._move_unit(Under.Coords - Vector2i(1, 1))
+	else:
+		print("no room")
+		reparent(UTile)
+
+func _drop():
+	Picked_Up = false
+	GameManager.Held = false
+	position = Vector3.ZERO
 
 func _screen_to_world():
 	var physics_space = get_world_3d().direct_space_state
@@ -259,4 +285,5 @@ func _screen_to_world():
 	query.collide_with_bodies = false
 	query.collision_mask = 16
 	var intersects = physics_space.intersect_ray(query)
+
 	return intersects

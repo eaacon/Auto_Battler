@@ -11,6 +11,8 @@ res://Scenes/UI/UI.tscn
 res://Scenes/Prefabs/Unit.tscn
 res://Scenes/Prefabs/Tile.tscn
 res://Scenes/Prefabs/Attack.tscn
-res://Scripts/ShopTile.gd
 res://Scripts/Unit.gd
+res://Scripts/GameManager.gd
 res://Scripts/Tile.gd
+res://Scripts/Board.gd
+res://Scenes/UI/Unit_Info_Control.tscn

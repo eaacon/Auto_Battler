@@ -152,6 +152,7 @@ libraries = {
 [node name="Boost" type="Area3D" parent="."]
 collision_layer = 8
 collision_mask = 4
+input_ray_pickable = false
 script = ExtResource("7_kkrxa")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Boost"]

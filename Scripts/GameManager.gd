@@ -1,10 +1,13 @@
 class_name GameManager
 extends Node3D
 
+static var Held:bool = false
+static var Can_Interact:bool = false
+
 #Game Settings
+enum Stage {START, SETUP, PREP, COMBAT, FINISH}
 signal win
 signal lose
-enum Stage {START, SETUP, PREP, COMBAT, FINISH}
 signal start
 signal setup
 signal prep
@@ -88,19 +91,19 @@ func _setup():
 		p._set_board()
 	
 	Players[0]._pay(5)
-	Players[0].board._set_interactable(true)
 	
 	await $Shop/AnimationPlayer.animation_finished
+	Can_Interact = true
 	GTimer.wait_time = Setup_Time
 	GTimer.start()
 	print("-Setup Stage")
 
 func _prep():
+	Can_Interact = false
 	$Shop._hide()
 	await $Shop/AnimationPlayer.animation_finished
 	prep.emit()
 	Current_Stage = Stage.PREP
-	Players[0].board._set_interactable(false)
 	
 	#matchmake opponent
 	#get all units in battle

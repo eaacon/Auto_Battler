@@ -35,11 +35,6 @@ func _make_tile(x, y):
 	
 	return inst
 
-func _set_interactable(b):
-	for t in get_children():
-		if t == Tile:
-			t._set_pickable(b)
-
 func _clear():
 	for x in Grid.size():
 		for y in Grid[x].size():
