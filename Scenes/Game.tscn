@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://chqqwwixc5ax0"]
+[gd_scene load_steps=19 format=3 uid="uid://chqqwwixc5ax0"]
 
 [ext_resource type="Script" path="res://Scripts/GameManager.gd" id="1_l88et"]
 [ext_resource type="Script" path="res://Scripts/Board.gd" id="2_bsf83"]
@@ -71,9 +71,12 @@ size = Vector3(0.9, 5, 10)
 [sub_resource type="BoxMesh" id="BoxMesh_hcmkf"]
 size = Vector3(3, 0.3, 3)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_pposp"]
+size = Vector3(50, 1, 30)
+
 [node name="Root" type="Node3D"]
 script = ExtResource("1_l88et")
-Setup_Time = 8
+Setup_Time = 15
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 11, 9)
@@ -120,6 +123,7 @@ uppercase = true
 
 [node name="Player" type="Node" parent="." node_paths=PackedStringArray("Health_Label")]
 script = ExtResource("6_luig1")
+Base_Money = 5
 Health_Label = NodePath("Board/HealthLabel")
 
 [node name="Board" type="Node3D" parent="Player"]
@@ -163,5 +167,12 @@ mesh = SubResource("BoxMesh_hcmkf")
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="Placeholder"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -0.15, -1.5)
 mesh = SubResource("BoxMesh_hcmkf")
+
+[node name="Ground" type="Area3D" parent="."]
+collision_layer = 16
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.387, -0.5, -0.862)
+shape = SubResource("BoxShape3D_pposp")
 
 [connection signal="timeout" from="GameTimer" to="." method="_on_game_timer_timeout"]

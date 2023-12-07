@@ -58,7 +58,8 @@ func _place_unit(u:Unit):
 func _move_unit(p: Vector2i):
 	#set unit on tile variable
 	if Owner_Board.Grid[p.x][p.y].Unit_On_Tile == null:
-		remove_child(Unit_On_Tile)
+		if Unit_On_Tile.get_parent() == self:
+			remove_child(Unit_On_Tile)
 		Owner_Board.Grid[p.x][p.y]._place_unit(Unit_On_Tile)
 	else:
 		return null

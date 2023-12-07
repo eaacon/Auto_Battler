@@ -13,8 +13,9 @@ size = Vector3(0.6, 0.6, 0.6)
 [sub_resource type="BoxShape3D" id="BoxShape3D_71c2w"]
 size = Vector3(0.6, 0.6, 0.6)
 
-[node name="Unit" type="Node3D" node_paths=PackedStringArray("UHitbox")]
+[node name="Unit" type="Node3D" node_paths=PackedStringArray("Tile_Detect", "UHitbox")]
 script = ExtResource("1_jexod")
+Tile_Detect = NodePath("RayCast3D")
 UStats = ExtResource("2_astb0")
 UHitbox = NodePath("Area3D")
 UAttack = ExtResource("4_rmh0o")
@@ -33,3 +34,8 @@ shape = SubResource("BoxShape3D_71c2w")
 
 [node name="FirePoint" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.33, 0)
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[connection signal="input_event" from="Area3D" to="." method="_on_area_3d_input_event"]

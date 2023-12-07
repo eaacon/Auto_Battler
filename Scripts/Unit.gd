@@ -7,8 +7,12 @@ signal S_Meter
 
 #Info
 var UOwner: BoardManager
-var UTile: Tile
+var UTile
 var Acting:= false
+
+#Drag And Drop
+var Picked_Up = false
+@export var Tile_Detect: RayCast3D
 
 @export var UStats: Stats
 @export var UHitbox:Area3D
@@ -213,3 +217,46 @@ func _damage(v: int):
 	UCurrentHP -= v
 	if UCurrentHP <= 0:
 		visible = false
+
+func _process(_delta):
+	if Picked_Up:
+		position = _screen_to_world()["position"]
+
+func _on_area_3d_input_event(_camera, event, _position, _normal, _shape_idx):
+	if event is InputEventMouseButton:
+		if event.pressed == true && !Picked_Up:
+			reparent(get_tree().root)
+			Picked_Up = true
+		elif Picked_Up:
+			var Under = Tile_Detect.get_collider().get_parent().get_parent()
+			if Under.get_script() == Tile:
+				if Under.Unit_On_Tile != null:
+					reparent(UTile)
+				elif UTile.get_script() == ShopTile:
+					#buy
+					get_parent().remove_child(self)
+					if !UTile._buy_unit(self, Under.Coords):
+						UTile.add_child(self)
+				elif UTile.get_script() == Tile:
+					#move
+					get_parent().remove_child(self)
+					UOwner.Team._move_unit(UTile.Coords, Under.Coords)
+					UTile._move_unit(Under.Coords - Vector2i(1, 1))
+			else:
+				reparent(UTile)
+			position = Vector3.ZERO
+			Picked_Up = false
+
+func _screen_to_world():
+	var physics_space = get_world_3d().direct_space_state
+	var MPos = get_viewport().get_mouse_position()
+	var cam = get_tree().root.get_camera_3d()
+
+	var ray_start = cam.project_ray_origin(MPos)
+	var ray_end = ray_start + cam.project_ray_normal(MPos) * 1000
+	var query = PhysicsRayQueryParameters3D.create(ray_start, ray_end)
+	query.collide_with_areas = true
+	query.collide_with_bodies = false
+	query.collision_mask = 16
+	var intersects = physics_space.intersect_ray(query)
+	return intersects

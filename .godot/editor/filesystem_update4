@@ -1,4 +1,5 @@
 res://Scenes/Game.tscn
+res://Scenes/Shop.gd
 res://Scenes/UI/UI_Theme.tres
 res://Scripts/Player.gd
 res://Scripts/Projectile.gd
@@ -10,5 +11,6 @@ res://Scenes/UI/UI.tscn
 res://Scenes/Prefabs/Unit.tscn
 res://Scenes/Prefabs/Tile.tscn
 res://Scenes/Prefabs/Attack.tscn
-res://Scenes/Shop.gd
+res://Scripts/ShopTile.gd
+res://Scripts/Unit.gd
 res://Scripts/Tile.gd
