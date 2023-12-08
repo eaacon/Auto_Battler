@@ -26,6 +26,7 @@ var Current_Stage: Stage
 #@export var Combat_Time = 60
 @export var Round_Delay := 1
 
+@export var Base_Player_Damage:int = 3
 var Unit_UI = preload("res://Scenes/UI/Unit_Info_Control.tscn")
 
 #Game Info
@@ -162,13 +163,13 @@ func _check_combat_win():
 	var p2 = Players[1].Units_Alive.size()
 	
 	if p1 <= 0 && p2 <= 0:
-		Players[0]._take_damage(5)
-		Players[1]._take_damage(5)
+		Players[0]._take_damage(Base_Player_Damage)
+		Players[1]._take_damage(Base_Player_Damage)
 	elif p2 <= 0:
 		Players[0]._pay(1)
-		Players[1]._take_damage(5 + p1)
+		Players[1]._take_damage(Base_Player_Damage + p1)
 	elif p1 <= 0:
-		Players[0]._take_damage(5 + p2)
+		Players[0]._take_damage(Base_Player_Damage + p2)
 	else:
 		return false
 	return true

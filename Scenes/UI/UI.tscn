@@ -1,6 +1,12 @@
-[gd_scene load_steps=4 format=3 uid="uid://dvjrvxlglu4y6"]
+[gd_scene load_steps=6 format=3 uid="uid://dvjrvxlglu4y6"]
 
 [ext_resource type="Script" path="res://Scripts/UI.gd" id="1_1j6v2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n2yct"]
+bg_color = Color(0.729412, 0.705882, 0.454902, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d8ua4"]
+bg_color = Color(0.14902, 0.105882, 0.239216, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wb76k"]
 bg_color = Color(0.164706, 0.223529, 0.243137, 1)
@@ -113,7 +119,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_wb76k")
+theme_override_styles/panel = SubResource("StyleBoxFlat_n2yct")
 
 [node name="Label" type="Label" parent="Control/WIN"]
 layout_mode = 1
@@ -129,7 +135,7 @@ offset_bottom = -19.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(0.5, 0.5)
-theme_override_colors/font_color = Color(0.109804, 0.0862745, 0.156863, 1)
+theme_override_colors/font_color = Color(0.717647, 0.27451, 0.372549, 1)
 theme_override_font_sizes/font_size = 75
 text = "YOU WIN!"
 
@@ -139,9 +145,9 @@ offset_left = 504.0
 offset_top = 392.0
 offset_right = 770.0
 offset_bottom = 466.0
-theme_override_colors/font_color = Color(0.109804, 0.0862745, 0.156863, 1)
+theme_override_colors/font_color = Color(0.729412, 0.705882, 0.454902, 1)
 theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_jpf62")
+theme_override_styles/normal = SubResource("StyleBoxFlat_d8ua4")
 text = "RESTART"
 
 [node name="LOSE" type="Panel" parent="Control"]

@@ -1,18 +1,18 @@
 class_name EnemyAI
 extends BoardManager
 
-@export var Team_Preset: Comp
+@export var E_Teams: Array[Comp]
+var Team_Index:= 1
 
 var Hidden:= true
 
 func _ready():
 	super._ready()
-	$"..".setup.connect(_hide)
-	$"..".prep.connect(_show)
+	$'..'.setup.connect(_hide)
+	$'..'.prep.connect(_round_prep)
 
 func _setup():
-	if Team_Preset != null:
-		Team = Team_Preset.duplicate()
+	Team = E_Teams[0].duplicate()
 	super._setup()
 
 func _hide():
@@ -20,7 +20,10 @@ func _hide():
 		$Board/AnimationPlayer.play("Exit_Right")
 		Hidden = true
 
-func _show():
+func _round_prep():
+	if Team_Index < E_Teams.size():
+		Team = E_Teams[Team_Index].duplicate()
+		Team_Index += 1
 	if Hidden:
 		$Board/AnimationPlayer.play("Enter_Right")
 		Hidden = false

@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="Comp" load_steps=8 format=3 uid="uid://mubwwqgpnys5"]
+
+[ext_resource type="Script" path="res://Scripts/CompUnit.gd" id="1_tb0vq"]
+[ext_resource type="PackedScene" uid="uid://osxgjd537561" path="res://Scenes/Prefabs/Unit_R.tscn" id="2_da2yf"]
+[ext_resource type="Script" path="res://Scripts/Comp.gd" id="3_4vn66"]
+
+[sub_resource type="Resource" id="Resource_d2gbk"]
+script = ExtResource("1_tb0vq")
+unit = ExtResource("2_da2yf")
+location = Vector2i(1, 1)
+
+[sub_resource type="Resource" id="Resource_jo44x"]
+script = ExtResource("1_tb0vq")
+unit = ExtResource("2_da2yf")
+location = Vector2i(1, 3)
+
+[sub_resource type="Resource" id="Resource_d8xul"]
+script = ExtResource("1_tb0vq")
+unit = ExtResource("2_da2yf")
+location = Vector2i(2, 1)
+
+[sub_resource type="Resource" id="Resource_8gxxf"]
+script = ExtResource("1_tb0vq")
+unit = ExtResource("2_da2yf")
+location = Vector2i(3, 3)
+
+[resource]
+script = ExtResource("3_4vn66")
+Comp_Units = Array[ExtResource("1_tb0vq")]([SubResource("Resource_d2gbk"), SubResource("Resource_jo44x"), SubResource("Resource_d8xul"), SubResource("Resource_8gxxf")])

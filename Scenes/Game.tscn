@@ -1,13 +1,17 @@
-[gd_scene load_steps=19 format=3 uid="uid://chqqwwixc5ax0"]
+[gd_scene load_steps=23 format=3 uid="uid://chqqwwixc5ax0"]
 
 [ext_resource type="Script" path="res://Scripts/GameManager.gd" id="1_l88et"]
 [ext_resource type="Script" path="res://Scripts/Board.gd" id="2_bsf83"]
 [ext_resource type="Script" path="res://Scripts/EnemyAI.gd" id="4_0xjwq"]
 [ext_resource type="Resource" uid="uid://djip0mf2d1xf5" path="res://Comps/Turn_1_Standard.tres" id="4_5ilft"]
 [ext_resource type="PackedScene" uid="uid://dvjrvxlglu4y6" path="res://Scenes/UI/UI.tscn" id="5_7eefj"]
+[ext_resource type="Resource" uid="uid://dt405u4f6lcd" path="res://Comps/Turn_2_Standard.tres" id="5_rwgrg"]
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="6_luig1"]
+[ext_resource type="Resource" uid="uid://xw865nxuu44y" path="res://Comps/Turn_3_Standard.tres" id="6_lyh01"]
 [ext_resource type="PackedScene" uid="uid://cu8rhlaplb3c7" path="res://Scenes/Shop.tscn" id="7_4l2aw"]
+[ext_resource type="Resource" uid="uid://dhfhwfu7npykv" path="res://Comps/Turn_4_Standard.tres" id="7_eanli"]
 [ext_resource type="Script" path="res://Scripts/Boost.gd" id="7_kkrxa"]
+[ext_resource type="Resource" uid="uid://mubwwqgpnys5" path="res://Comps/Turn_5_Standard.tres" id="8_lyjdi"]
 
 [sub_resource type="Environment" id="Environment_xiim7"]
 background_mode = 1
@@ -98,9 +102,9 @@ shadow_enabled = true
 
 [node name="EnemyAI" type="Node" parent="." node_paths=PackedStringArray("Health_Label")]
 script = ExtResource("4_0xjwq")
-Team_Preset = ExtResource("4_5ilft")
+E_Teams = Array[Resource("res://Scripts/Comp.gd")]([ExtResource("4_5ilft"), ExtResource("5_rwgrg"), ExtResource("6_lyh01"), ExtResource("7_eanli"), ExtResource("8_lyjdi")])
 Health_Label = NodePath("Board/HealthLabel")
-Health = 20
+Health = 25
 
 [node name="Board" type="Node3D" parent="EnemyAI"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 0)
