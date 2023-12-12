@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://bi2xl6xkj8x4f"]
+
+[ext_resource type="Script" path="res://Scripts/Skill.gd" id="1_8xlxw"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_pgjk8"]
+radius = 0.323056
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wu5g2"]
+albedo_color = Color(0.419608, 0.101961, 0.266667, 1)
+roughness = 0.1
+emission_enabled = true
+emission = Color(0.921569, 0.564706, 0.847059, 1)
+emission_energy_multiplier = 0.75
+
+[sub_resource type="TorusMesh" id="TorusMesh_8jlsu"]
+material = SubResource("StandardMaterial3D_wu5g2")
+inner_radius = 0.1
+outer_radius = 0.3
+rings = 16
+ring_segments = 8
+
+[node name="Skill" type="Area3D"]
+collision_layer = 4
+script = ExtResource("1_8xlxw")
+SDmg = 10
+Speed = 3.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_pgjk8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("TorusMesh_8jlsu")

@@ -11,6 +11,9 @@ signal lose
 signal start
 signal setup
 signal prep
+signal combat
+signal finish
+var In_Combat:= false
 
 var Current_Stage: Stage
 
@@ -51,14 +54,8 @@ func _ready():
 func _process(_delta):
 	Game_UI._update_time(GTimer.time_left)
 	
-	#combat turn acting
-	if(Turn_Active):
-		for u in Units_In_Play:
-			if(u.Acting):
-				return
-	
-	Next_Turn.emit()
-	Turn_Active = false
+	if In_Combat:
+		_check_combat_win()
 
 func _begin_game():
 	start.emit()
@@ -107,7 +104,6 @@ func _prep():
 	Current_Stage = Stage.PREP
 	
 	#matchmake opponent
-	#get all units in battle
 	for b in Players:
 		Units_In_Play.append_array(b.board._get_units())
 
@@ -118,45 +114,10 @@ func _prep():
 func _combat():
 	Current_Stage = Stage.COMBAT
 	print("-Combat Stage")
-	_combat_round()
+	combat.emit()
+	In_Combat = true
+	#round max timer
 
-func _combat_round():
-	Round_Num += 1
-	print("-Round "+str(Round_Num))
-	if(Round_Num > 30):
-		print("! too many rounds")
-		Round_Num = 0
-		_next_stage()
-		return
-
-	Game_UI._set_stage_label("ROUND "+str(Round_Num))
-
-	Turn_Active = true
-
-	for u in Units_In_Play:
-		if u != null:
-			u._start_turn()
-	
-	await Next_Turn
-	
-	for u in Units_In_Play:
-		if u != null:
-			u._end_turn()
-	
-	for k in Kill_Queue:
-		Units_In_Play.erase(k)
-
-	await get_tree().create_timer(Round_Delay).timeout
-	
-	if _check_combat_win():
-		print("-Combat End")
-		Round_Num = 0
-		_next_stage()
-	else:
-		_combat_round()
-
-func _out_of_play(u):
-	Kill_Queue.append(u)
 
 func _check_combat_win():
 	var p1 = Players[0].Units_Alive.size()
@@ -171,10 +132,14 @@ func _check_combat_win():
 	elif p1 <= 0:
 		Players[0]._take_damage(Base_Player_Damage + p2)
 	else:
-		return false
-	return true
+		return
+
+	In_Combat = false
+	await get_tree().create_timer(Round_Delay).timeout
+	_next_stage()
 
 func _finish():
+	finish.emit()
 	Current_Stage = Stage.FINISH
 	
 	if Players[1].Current_Health <= 0:

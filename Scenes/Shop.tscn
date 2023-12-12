@@ -1,10 +1,12 @@
-[gd_scene load_steps=12 format=3 uid="uid://cu8rhlaplb3c7"]
+[gd_scene load_steps=14 format=3 uid="uid://cu8rhlaplb3c7"]
 
-[ext_resource type="Script" path="res://Scenes/Shop.gd" id="1_j70tr"]
+[ext_resource type="Script" path="res://Scripts/Shop.gd" id="1_j70tr"]
+[ext_resource type="PackedScene" uid="uid://b6801p20exbyj" path="res://Units/Archer/Archer.tscn" id="2_8or30"]
 [ext_resource type="Material" uid="uid://bp6r88oipobwy" path="res://Art/Materials/Default_Material.tres" id="2_cac2o"]
-[ext_resource type="PackedScene" uid="uid://e2cnlvt2tcfi" path="res://Scenes/Prefabs/Unit.tscn" id="2_vrfu0"]
+[ext_resource type="PackedScene" uid="uid://ykjh8rs2ew8s" path="res://Units/Apprentice/Apprentice.tscn" id="3_dy45t"]
 [ext_resource type="Material" uid="uid://cmuy50nyemujp" path="res://Art/Materials/Default_MaterialR.tres" id="3_ekgms"]
 [ext_resource type="Material" uid="uid://ctboy1wo2o2ly" path="res://Art/Materials/Default_Tile_Material.tres" id="4_2xepo"]
+[ext_resource type="PackedScene" uid="uid://bsxism1ibmn8w" path="res://Units/Militia/Militia.tscn" id="4_56p4d"]
 [ext_resource type="Material" uid="uid://drvtqhstynlas" path="res://Art/Materials/Default_Tile_Selected_Material.tres" id="5_3lsui"]
 [ext_resource type="PackedScene" uid="uid://b566e1tca25v0" path="res://Scenes/Prefabs/ShopTile.tscn" id="6_hsybg"]
 
@@ -25,7 +27,7 @@ radius = 0.36
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0)
 script = ExtResource("1_j70tr")
 Slots = [NodePath("ShopTile"), NodePath("ShopTile2"), NodePath("ShopTile3")]
-For_Sale = Array[PackedScene]([ExtResource("2_vrfu0")])
+For_Sale = Array[PackedScene]([ExtResource("2_8or30"), ExtResource("3_dy45t"), ExtResource("4_56p4d")])
 
 [node name="Visuals" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 0, 0)

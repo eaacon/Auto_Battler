@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Stats" load_steps=2 format=3 uid="uid://vp17mrn6jois"]
+
+[ext_resource type="Script" path="res://Scripts/Stats.gd" id="1_1mjcu"]
+
+[resource]
+script = ExtResource("1_1mjcu")
+UName = "Unit"
+UCost = 5
+UHP = 15
+UMeter = 4
+URange = 1
+UAttack = 5
+USpeed = 0.3

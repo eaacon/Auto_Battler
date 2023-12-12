@@ -1,10 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://e2cnlvt2tcfi"]
+[gd_scene load_steps=7 format=3 uid="uid://e2cnlvt2tcfi"]
 
 [ext_resource type="Script" path="res://Scripts/Unit.gd" id="1_jexod"]
 [ext_resource type="Material" uid="uid://bp6r88oipobwy" path="res://Art/Materials/Default_Material.tres" id="1_x0x04"]
-[ext_resource type="Resource" uid="uid://bj4l5wam3mdrw" path="res://Scenes/Units/BaseStats.tres" id="2_astb0"]
+[ext_resource type="Resource" uid="uid://bj4l5wam3mdrw" path="res://Units/BaseStats.tres" id="2_ql86q"]
 [ext_resource type="PackedScene" uid="uid://bl217ffxov4k7" path="res://Scenes/Prefabs/Attack.tscn" id="4_rmh0o"]
-[ext_resource type="PackedScene" uid="uid://pkotfe26k0f" path="res://Scenes/Prefabs/Ability.tscn" id="4_sp1hg"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_cvh1r"]
 material = ExtResource("1_x0x04")
@@ -16,10 +15,9 @@ size = Vector3(0.6, 0.6, 0.6)
 [node name="Unit" type="Node3D" node_paths=PackedStringArray("Tile_Detect", "UHitbox")]
 script = ExtResource("1_jexod")
 Tile_Detect = NodePath("RayCast3D")
-UStats = ExtResource("2_astb0")
+UStats = ExtResource("2_ql86q")
 UHitbox = NodePath("Area3D")
 UAttack = ExtResource("4_rmh0o")
-USkill = ExtResource("4_sp1hg")
 
 [node name="GFX" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
@@ -38,4 +36,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.33, 0)
 [node name="RayCast3D" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="input_event" from="Area3D" to="." method="_on_area_3d_input_event"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

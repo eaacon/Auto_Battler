@@ -1,0 +1,51 @@
+[gd_scene load_steps=8 format=3 uid="uid://b6801p20exbyj"]
+
+[ext_resource type="Script" path="res://Units/Archer/Archer.gd" id="1_rxbjf"]
+[ext_resource type="Resource" uid="uid://nc1xls0s5a5g" path="res://Units/Archer/ArcherStats.tres" id="2_rk1i2"]
+[ext_resource type="PackedScene" uid="uid://cu2foa6tpm7n" path="res://Units/Archer/ArcherAttack.tscn" id="3_b3gan"]
+[ext_resource type="Material" uid="uid://pvs5c6gpywj7" path="res://Units/Archer/Archer_Mat.tres" id="3_qrxnn"]
+[ext_resource type="Material" uid="uid://bp6r88oipobwy" path="res://Art/Materials/Default_Material.tres" id="4_mme1m"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_sqgqv"]
+material = ExtResource("4_mme1m")
+size = Vector3(0.6, 0.6, 0.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mc6cp"]
+size = Vector3(0.6, 0.6, 0.6)
+
+[node name="Archer" type="Node3D" node_paths=PackedStringArray("Tile_Detect", "UHitbox")]
+script = ExtResource("1_rxbjf")
+Tile_Detect = NodePath("RayCast3D")
+UStats = ExtResource("2_rk1i2")
+UHitbox = NodePath("Area3D")
+UAttack = ExtResource("3_b3gan")
+
+[node name="GFX" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+material_override = ExtResource("3_qrxnn")
+mesh = SubResource("BoxMesh_sqgqv")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0.004)
+shape = SubResource("BoxShape3D_mc6cp")
+
+[node name="FirePoint" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.33, 0)
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[node name="SkillDuration" type="Timer" parent="."]
+one_shot = true
+
+[node name="AbilityAttackTimer" type="Timer" parent="."]
+
+[connection signal="input_event" from="Area3D" to="." method="_on_area_3d_input_event"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="SkillDuration" to="." method="_on_speed_buff_timeout"]
+[connection signal="timeout" from="SkillDuration" to="." method="_on_skill_duration_timeout"]

@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://cqm7nkmbim0i7"]
+
+[ext_resource type="Script" path="res://Scripts/Projectile.gd" id="1_24w0v"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8rdma"]
+size = Vector3(0.323395, 0.0795898, 0.53125)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8bekr"]
+albedo_color = Color(0.564706, 0.6, 0.627451, 1)
+
+[sub_resource type="PrismMesh" id="PrismMesh_v21ln"]
+material = SubResource("StandardMaterial3D_8bekr")
+left_to_right = 0.0
+size = Vector3(0.3, 0.05, 0.5)
+
+[node name="Attack" type="Area3D"]
+collision_layer = 4
+script = ExtResource("1_24w0v")
+Speed = 2.5
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.75, 0, 0, 0, 0.75, 0, 0, 0, 0.75, 0.000354767, 0.000764728, 0)
+shape = SubResource("BoxShape3D_8rdma")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.75, 0, 0, 0, 0.75, 0, 0, 0, 0.75, 0, 0, 0)
+mesh = SubResource("PrismMesh_v21ln")

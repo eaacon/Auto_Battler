@@ -31,10 +31,12 @@ func _set_interactable(b):
 		t._set_pickable(b)
 
 func _stock():
-	for s in Slots:
-		var Randu = randi_range(0, For_Sale.size()-1)
-		var u = For_Sale[Randu].instantiate()
-		s._set_unit(For_Sale[Randu], u)
+	for s in Slots.size():
+		#var Randu = randi_range(0, For_Sale.size()-1)
+		#var u = For_Sale[Randu].instantiate()
+		#s._set_unit(For_Sale[Randu], u)
+		var u = For_Sale[s].instantiate()
+		Slots[s]._set_unit(For_Sale[s], u)
 
 func _reroll():
 	if P._spend(2):

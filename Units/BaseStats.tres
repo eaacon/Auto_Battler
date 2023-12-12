@@ -6,7 +6,8 @@
 script = ExtResource("1_isd7r")
 UName = "Unit"
 UCost = 5
-UHP = 25
+UHP = 50
 UMeter = 3
 URange = 2
-UAttack = 5
+UAttack = 3
+USpeed = 0.25

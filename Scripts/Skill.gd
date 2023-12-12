@@ -39,7 +39,6 @@ func _boost():
 	tween.tween_callback(_destroy)
 
 func _destroy():
-	get_parent().get_parent().Acting = false
 	if tween:
 		tween.kill()
 	queue_free()

@@ -8,7 +8,7 @@ signal S_Meter
 #Info
 var UOwner: BoardManager
 var UTile
-var Acting:= false
+var Fighting:= false
 
 #Drag And Drop
 var Picked_Up = false
@@ -32,20 +32,17 @@ var UCurrentMeter:
 		UCurrentMeter = m
 		S_Meter.emit()
 
+var UCurrentAS
+
 #Skill
-@export var USkill: PackedScene
-
-#In-Game
-var QDmg: int
-
-var Queue_Move:= false
-var Queue_Advance := false
+var In_Skill:= false
 
 func _ready():
 	UMaxHP = UStats.UHP
 	UMaxMeter = UStats.UMeter
 	UCurrentHP = UMaxHP
 	UCurrentMeter = 0
+	UCurrentAS = UStats.USpeed
 
 func _setup(p:int, o:BoardManager):
 	UOwner = o
@@ -59,39 +56,47 @@ func _setup(p:int, o:BoardManager):
 		UHitbox.set_collision_layer_value(2, true)
 		Player_Unit = false
 
-func _start_turn():
-	Acting = true
+func _connect_GM():
+	UOwner.GM.combat.connect(_fighting)
+	UOwner.GM.finish.connect(_fighting)
 
+func _ability():
+	_attack()
+	$Timer.wait_time = 1/UCurrentAS
+	$Timer.start()
+
+func _fighting():
+	Fighting = !Fighting
+	_turn()
+
+func _process(_delta):
+	if UCurrentHP <= 0:
+		_die()
+
+	_pickup_logic()
+
+func _turn():
 	if !_check_range():
-		Queue_Advance = true
-		Acting = false
-		return
+		_advance()
 	else:
 		if _can_attack():
-			if(UCurrentMeter == UMaxMeter):
-				#implement ability
-				_ability()
-				UCurrentMeter = 0
+			if UCurrentMeter == UMaxMeter:
+				if !In_Skill:
+					_ability()
+				else:
+					return
 			else:
 				_attack()
 				UCurrentMeter += 1
 		else:
-			Queue_Move = true
-			Acting = false
+			_move()
 
-func _end_turn():	
-	if Queue_Move:
-		_move()
-		Queue_Move = false
-	elif Queue_Advance:
-		_advance()
-		Queue_Advance = false
+	$Timer.wait_time = 1/UCurrentAS
+	$Timer.start()
 
-	UCurrentHP -= QDmg
-	QDmg = 0
-	
-	if UCurrentHP <= 0:
-		_die()
+func _on_timer_timeout():
+	if Fighting:
+		_turn()
 
 func _check_range():
 	var In_Range := false
@@ -152,11 +157,6 @@ func _attack():
 	$FirePoint.add_child(attack_inst)
 	attack_inst._setup(UStats.UAttack + randi_range(-1, 1), UStats.URange, Vector3(1,0,0), Player_Unit)
 
-func _ability():
-	var ability_inst = USkill.instantiate()
-	$FirePoint.add_child(ability_inst)
-	ability_inst._setup(Vector3(1,0,0), Player_Unit)
-
 func _move():
 	var Move_Options = []
 	Move_Options.append(Vector2i(UTile.Coords.x - 1, _get_valid_Y(UTile.Coords.y + 1, UTile.Owner_Board) - 1))
@@ -210,17 +210,11 @@ func _die():
 	UOwner._kill(self)
 	UTile._kill_unit()
 
-func _queue_dmg(v: int):
-	QDmg += v
-
 func _damage(v: int):
 	UCurrentHP -= v
-	if UCurrentHP <= 0:
-		remove_child($Area3D)
-		remove_child($GFX)
 
 #Drag and Drop
-func _process(_delta):
+func _pickup_logic():
 	if Picked_Up:
 		if !GameManager.Can_Interact:
 			reparent(UTile)

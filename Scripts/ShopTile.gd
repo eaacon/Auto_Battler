@@ -9,6 +9,9 @@ var Shop_Unit:
 	set(new_unit):
 		Shop_Unit = new_unit
 
+func _ready():
+	S = $"../"
+	
 func _set_pickable(b):
 	$MeshInstance3D/StaticBody3D.input_ray_pickable = b
 
@@ -22,6 +25,7 @@ func _buy_unit(u, target):
 		S.P.Units_Alive.append(u)
 		S.P._create_unit_ui(u)
 		S.P.Team._add_unit(Unit_Scene, target)
+		Shop_Unit._connect_GM()
 		_move_unit(target- Vector2i(1,1))
 		return true
 	return false

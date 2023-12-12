@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://cu2foa6tpm7n"]
+
+[ext_resource type="Script" path="res://Scripts/Projectile.gd" id="1_6v5w0"]
+[ext_resource type="Material" uid="uid://drvtqhstynlas" path="res://Art/Materials/Default_Tile_Selected_Material.tres" id="2_bl4uj"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_patdl"]
+size = Vector3(0.128662, 0.128662, 0.467896)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ljc6v"]
+top_radius = 0.05
+bottom_radius = 0.15
+
+[node name="Attack" type="Area3D"]
+collision_layer = 4
+script = ExtResource("1_6v5w0")
+Speed = 2.75
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
+shape = SubResource("BoxShape3D_patdl")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(-8.74228e-09, 0.2, -8.74228e-09, 0, -8.74228e-09, -0.2, -0.2, -8.74228e-09, 3.82137e-16, 0, 0, 0)
+material_override = ExtResource("2_bl4uj")
+mesh = SubResource("CylinderMesh_ljc6v")

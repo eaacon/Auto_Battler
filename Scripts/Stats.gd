@@ -7,3 +7,4 @@ extends Resource
 @export var UMeter:int = 3
 @export var URange:int = 3
 @export var UAttack:int = 2
+@export var USpeed:float = 0.5

@@ -1,8 +1,0 @@
-[gd_scene load_steps=3 format=3 uid="uid://bw836m7jk2q0i"]
-
-[ext_resource type="Script" path="res://Scripts/Ranged.gd" id="1_ttkbl"]
-[ext_resource type="Resource" uid="uid://bj4l5wam3mdrw" path="res://Scenes/Units/BaseStats.tres" id="2_f2oxt"]
-
-[node name="Node3D" type="Node3D"]
-script = ExtResource("1_ttkbl")
-UStats = ExtResource("2_f2oxt")

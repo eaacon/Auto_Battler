@@ -1,0 +1,46 @@
+[gd_scene load_steps=9 format=3 uid="uid://ykjh8rs2ew8s"]
+
+[ext_resource type="Script" path="res://Units/Apprentice/Apprentice.gd" id="1_icx7i"]
+[ext_resource type="Resource" uid="uid://xinhwqu5ldhs" path="res://Units/Apprentice/Apprentice_Stats.tres" id="2_d55ss"]
+[ext_resource type="PackedScene" uid="uid://cryr5oru78ena" path="res://Units/Apprentice/ApprenticeAttack.tscn" id="3_7b8pd"]
+[ext_resource type="Material" uid="uid://ctt4gsm48dbpd" path="res://Units/Apprentice/Apprentice_Mat.tres" id="4_5c2is"]
+[ext_resource type="PackedScene" uid="uid://bi2xl6xkj8x4f" path="res://Units/Apprentice/Spell.tscn" id="4_l2ris"]
+[ext_resource type="Material" uid="uid://bp6r88oipobwy" path="res://Art/Materials/Default_Material.tres" id="5_qehvy"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_sqgqv"]
+material = ExtResource("5_qehvy")
+size = Vector3(0.6, 0.6, 0.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mc6cp"]
+size = Vector3(0.6, 0.6, 0.6)
+
+[node name="Apprentice" type="Node3D" node_paths=PackedStringArray("Tile_Detect", "UHitbox")]
+script = ExtResource("1_icx7i")
+Tile_Detect = NodePath("RayCast3D")
+UStats = ExtResource("2_d55ss")
+UHitbox = NodePath("Area3D")
+UAttack = ExtResource("3_7b8pd")
+USkill = ExtResource("4_l2ris")
+
+[node name="GFX" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+material_override = ExtResource("4_5c2is")
+mesh = SubResource("BoxMesh_sqgqv")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0.004)
+shape = SubResource("BoxShape3D_mc6cp")
+
+[node name="FirePoint" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.33, 0)
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="input_event" from="Area3D" to="." method="_on_area_3d_input_event"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

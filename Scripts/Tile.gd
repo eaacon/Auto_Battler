@@ -17,6 +17,7 @@ func _create_unit(u:Unit, p:int):
 	_place_unit(u)
 	Owner_Board.Owner._create_unit_ui(u)
 	u._setup(p, Owner_Board.Owner.GM.Players[p-1])
+	u._connect_GM()
 
 func _place_unit(u:Unit):
 	add_child(u)
@@ -44,7 +45,6 @@ func _hop_unit(p: Vector2i):
 	Unit_On_Tile = null
 
 func _kill_unit():
-	Owner_Board.GM._out_of_play(Unit_On_Tile)
 	_remove_unit()
 
 func _remove_unit():
