@@ -1,0 +1,60 @@
+[gd_scene load_steps=9 format=3 uid="uid://b28sf1h0jwro4"]
+
+[ext_resource type="Script" path="res://Units/Dummy/Dummy.gd" id="1_k8b5i"]
+[ext_resource type="Resource" uid="uid://57trvwct0pen" path="res://Units/Dummy/Dummy_Stats.tres" id="2_3bocm"]
+[ext_resource type="Material" uid="uid://dv6y2le0pffdt" path="res://Units/Dummy/Dummy_Mat.tres" id="3_s8sxn"]
+[ext_resource type="Material" uid="uid://bp6r88oipobwy" path="res://Art/Materials/Default_Material.tres" id="5_8u5vx"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_sqgqv"]
+material = ExtResource("5_8u5vx")
+size = Vector3(0.6, 0.6, 0.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mc6cp"]
+size = Vector3(0.6, 0.6, 0.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q3mbu"]
+transparency = 1
+albedo_color = Color(0.384314, 0.54902, 0.639216, 0.356863)
+emission_enabled = true
+emission = Color(0.615686, 0.733333, 0.843137, 1)
+emission_energy_multiplier = 0.5
+
+[sub_resource type="SphereMesh" id="SphereMesh_lq1by"]
+material = SubResource("StandardMaterial3D_q3mbu")
+radius = 0.6
+height = 0.6
+is_hemisphere = true
+
+[node name="Dummy" type="Node3D" node_paths=PackedStringArray("Tile_Detect", "UHitbox")]
+script = ExtResource("1_k8b5i")
+Tile_Detect = NodePath("RayCast3D")
+UStats = ExtResource("2_3bocm")
+UHitbox = NodePath("Area3D")
+
+[node name="GFX" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+material_override = ExtResource("3_s8sxn")
+mesh = SubResource("BoxMesh_sqgqv")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0.004)
+shape = SubResource("BoxShape3D_mc6cp")
+
+[node name="FirePoint" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.33, 0)
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[node name="BlockFX" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.131339, 0.991337, 0, -0.991337, 0.131339, 0, 0, 0, 1, 0, 0.278603, 0)
+visible = false
+mesh = SubResource("SphereMesh_lq1by")
+
+[connection signal="input_event" from="Area3D" to="." method="_on_area_3d_input_event"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

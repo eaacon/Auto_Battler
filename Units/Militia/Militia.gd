@@ -4,11 +4,13 @@ extends Unit
 var Blocking:= false
 
 func _ability():
+	if Blocking:
+		return
+
 	In_Skill = true
 	
 	Blocking = true
 	$BlockFX.show()
-	_turn()
 
 func _damage(v: int):
 	var Mod_Dmg = v

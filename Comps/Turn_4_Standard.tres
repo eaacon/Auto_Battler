@@ -1,22 +1,23 @@
-[gd_resource type="Resource" script_class="Comp" load_steps=7 format=3 uid="uid://dhfhwfu7npykv"]
+[gd_resource type="Resource" script_class="Comp" load_steps=8 format=3 uid="uid://dhfhwfu7npykv"]
 
 [ext_resource type="Script" path="res://Scripts/CompUnit.gd" id="1_mmdeq"]
-[ext_resource type="PackedScene" uid="uid://osxgjd537561" path="res://Scenes/Prefabs/Unit_R.tscn" id="2_5e6i2"]
+[ext_resource type="PackedScene" uid="uid://bsxism1ibmn8w" path="res://Units/Militia/Militia.tscn" id="2_85816"]
+[ext_resource type="PackedScene" uid="uid://b6801p20exbyj" path="res://Units/Archer/Archer.tscn" id="3_6ooab"]
 [ext_resource type="Script" path="res://Scripts/Comp.gd" id="3_ee7cn"]
 
 [sub_resource type="Resource" id="Resource_d2gbk"]
 script = ExtResource("1_mmdeq")
-unit = ExtResource("2_5e6i2")
+unit = ExtResource("2_85816")
 location = Vector2i(1, 2)
 
 [sub_resource type="Resource" id="Resource_jo44x"]
 script = ExtResource("1_mmdeq")
-unit = ExtResource("2_5e6i2")
+unit = ExtResource("2_85816")
 location = Vector2i(2, 1)
 
 [sub_resource type="Resource" id="Resource_fflai"]
 script = ExtResource("1_mmdeq")
-unit = ExtResource("2_5e6i2")
+unit = ExtResource("3_6ooab")
 location = Vector2i(2, 3)
 
 [resource]

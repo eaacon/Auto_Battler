@@ -10,4 +10,5 @@ UHP = 8
 UMeter = 2
 URange = 2
 UAttack = 8
-USpeed = 0.75
+USpeed = 0.6
+UMove = 0.75

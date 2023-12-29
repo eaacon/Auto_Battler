@@ -1,12 +1,12 @@
 [gd_resource type="Resource" script_class="Comp" load_steps=5 format=3 uid="uid://dt405u4f6lcd"]
 
 [ext_resource type="Script" path="res://Scripts/CompUnit.gd" id="1_el5cf"]
-[ext_resource type="PackedScene" uid="uid://osxgjd537561" path="res://Scenes/Prefabs/Unit_R.tscn" id="2_dg7sm"]
+[ext_resource type="PackedScene" uid="uid://b6801p20exbyj" path="res://Units/Archer/Archer.tscn" id="2_5mnit"]
 [ext_resource type="Script" path="res://Scripts/Comp.gd" id="3_axcff"]
 
 [sub_resource type="Resource" id="Resource_d2gbk"]
 script = ExtResource("1_el5cf")
-unit = ExtResource("2_dg7sm")
+unit = ExtResource("2_5mnit")
 location = Vector2i(3, 2)
 
 [resource]

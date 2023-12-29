@@ -16,11 +16,11 @@ size = Vector3(0.6, 0.6, 0.6)
 
 [node name="Apprentice" type="Node3D" node_paths=PackedStringArray("Tile_Detect", "UHitbox")]
 script = ExtResource("1_icx7i")
+USkill = ExtResource("4_l2ris")
 Tile_Detect = NodePath("RayCast3D")
 UStats = ExtResource("2_d55ss")
 UHitbox = NodePath("Area3D")
 UAttack = ExtResource("3_7b8pd")
-USkill = ExtResource("4_l2ris")
 
 [node name="GFX" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)

@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" path="res://Scripts/CompUnit.gd" id="1_c3mcl"]
 [ext_resource type="Script" path="res://Scripts/Comp.gd" id="1_kfsi8"]
-[ext_resource type="PackedScene" uid="uid://osxgjd537561" path="res://Scenes/Prefabs/Unit_R.tscn" id="2_wdqhb"]
+[ext_resource type="PackedScene" uid="uid://bsxism1ibmn8w" path="res://Units/Militia/Militia.tscn" id="2_r4nwc"]
 
 [sub_resource type="Resource" id="Resource_d2gbk"]
 script = ExtResource("1_c3mcl")
-unit = ExtResource("2_wdqhb")
+unit = ExtResource("2_r4nwc")
 location = Vector2i(1, 1)
 
 [resource]

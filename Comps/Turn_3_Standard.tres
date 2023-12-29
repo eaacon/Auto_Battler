@@ -1,17 +1,18 @@
-[gd_resource type="Resource" script_class="Comp" load_steps=6 format=3 uid="uid://xw865nxuu44y"]
+[gd_resource type="Resource" script_class="Comp" load_steps=7 format=3 uid="uid://xw865nxuu44y"]
 
 [ext_resource type="Script" path="res://Scripts/CompUnit.gd" id="1_8pxh5"]
-[ext_resource type="PackedScene" uid="uid://osxgjd537561" path="res://Scenes/Prefabs/Unit_R.tscn" id="2_kwbqm"]
+[ext_resource type="PackedScene" uid="uid://bsxism1ibmn8w" path="res://Units/Militia/Militia.tscn" id="2_0lwn0"]
 [ext_resource type="Script" path="res://Scripts/Comp.gd" id="3_lbm8t"]
+[ext_resource type="PackedScene" uid="uid://b6801p20exbyj" path="res://Units/Archer/Archer.tscn" id="3_qvoyn"]
 
 [sub_resource type="Resource" id="Resource_d2gbk"]
 script = ExtResource("1_8pxh5")
-unit = ExtResource("2_kwbqm")
+unit = ExtResource("2_0lwn0")
 location = Vector2i(1, 3)
 
 [sub_resource type="Resource" id="Resource_jo44x"]
 script = ExtResource("1_8pxh5")
-unit = ExtResource("2_kwbqm")
+unit = ExtResource("3_qvoyn")
 location = Vector2i(3, 1)
 
 [resource]

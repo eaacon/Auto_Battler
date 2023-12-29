@@ -12,4 +12,3 @@ func _ability():
 	
 	UCurrentMeter = 0
 	In_Skill = false
-	_turn()

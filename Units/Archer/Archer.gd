@@ -14,22 +14,11 @@ func _ability():
 	$SkillDuration.wait_time = AS_Buff_Duration
 	$SkillDuration.start()
 	
-	_part()
-
-func _part():
-	if !In_Skill:
-		return
-	
+	_reset_timer(UCurrentAS)
+	await $Timer.timeout
 	_attack()
-	
-	$AbilityAttackTimer.wait_time = 1/UCurrentAS
-	$AbilityAttackTimer.start()
-	await $AbilityAttackTimer.timeout
-	
-	_part()
 
 func _on_skill_duration_timeout():
 	UCurrentAS = Old_AS
 	UCurrentMeter = 0
 	In_Skill = false
-	_turn()

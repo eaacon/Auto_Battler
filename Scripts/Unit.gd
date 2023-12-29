@@ -37,6 +37,7 @@ var UCurrentAS
 #Skill
 var In_Skill:= false
 
+#region Setup
 func _ready():
 	UMaxHP = UStats.UHP
 	UMaxMeter = UStats.UMeter
@@ -62,12 +63,7 @@ func _connect_GM():
 
 func _ability():
 	_attack()
-	$Timer.wait_time = 1/UCurrentAS
-	$Timer.start()
-
-func _fighting():
-	Fighting = !Fighting
-	_turn()
+#endregion
 
 func _process(_delta):
 	if UCurrentHP <= 0:
@@ -75,26 +71,37 @@ func _process(_delta):
 
 	_pickup_logic()
 
+func _fighting():
+	Fighting = !Fighting
+	_turn()
+
+func _reset_timer(spd:float):
+	$Timer.wait_time = 1/spd
+	$Timer.start()
+
 func _turn():
 	if !_check_range():
+		_reset_timer(UStats.UMove)
+		await $Timer.timeout
 		_advance()
 	else:
 		if _can_attack():
-			if UCurrentMeter == UMaxMeter:
-				if !In_Skill:
-					_ability()
-				else:
-					return
+			if UCurrentMeter == UMaxMeter && !In_Skill:
+				_reset_timer(UCurrentAS)
+				await $Timer.timeout
+				_ability()
 			else:
+				_reset_timer(UCurrentAS)
+				await $Timer.timeout
 				_attack()
-				UCurrentMeter += 1
+				
+				if UCurrentMeter < UMaxMeter:
+					UCurrentMeter += 1
 		else:
+			_reset_timer(UStats.UMove)
+			await $Timer.timeout
 			_move()
-
-	$Timer.wait_time = 1/UCurrentAS
-	$Timer.start()
-
-func _on_timer_timeout():
+	
 	if Fighting:
 		_turn()
 
@@ -168,7 +175,7 @@ func _move():
 func _advance():
 	var B = UTile.Owner_Board
 	var Move_Tile = UTile.Coords
-	if B.GM._is_player(B.Owner):
+	if B.GM._is_player(UOwner):
 		Move_Tile.x += 1
 	else:
 		Move_Tile.x -= 1
@@ -205,15 +212,17 @@ func _get_valid_Y(y, _b):
 	else:
 		return y
 
+#region Health
+func _damage(v: int):
+	UCurrentHP -= v
+
 func _die():
 	print(self.name + " died")
 	UOwner._kill(self)
 	UTile._kill_unit()
+#endregion
 
-func _damage(v: int):
-	UCurrentHP -= v
-
-#Drag and Drop
+#region Drag and Drop
 func _pickup_logic():
 	if Picked_Up:
 		if !GameManager.Can_Interact:
@@ -281,3 +290,4 @@ func _screen_to_world():
 	var intersects = physics_space.intersect_ray(query)
 
 	return intersects
+#endregion
